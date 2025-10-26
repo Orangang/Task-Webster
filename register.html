@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Task Webster · Регистрация</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F5F7FB; --shell:#fff; --text:#0B1220; --muted:#6B7380;
+  --line:#E6E9F0; --line-strong:#D6DAE3; --shadow:0 12px 32px rgba(12,22,44,.08);
+  --fs-xs:clamp(11px,.78vw,12px); --fs-sm:clamp(12px,.9vw,14px);
+  --fs-md:clamp(14px,1.05vw,16px); --fs-lg:clamp(18px,1.35vw,22px);
+  --radius:12px; --radius-lg:16px;
+}
+*{box-sizing:border-box}html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:400 var(--fs-md)/1.5 "Inter",system-ui}
+.shell{min-height:100vh;display:grid;grid-template-columns:1fr}
+@media(min-width:960px){.shell{grid-template-columns:520px 1fr}}
+.left{display:grid;place-items:center;padding:24px}
+.card{width:min(420px,100%);background:var(--shell);border:1px solid var(--line);border-radius:var(--radius-lg);box-shadow:var(--shadow);padding:22px}
+.header{display:flex;gap:12px;align-items:center;margin-bottom:8px}
+.logo{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#7aa7ff,#5ec8ff)}
+h1{margin:0}
+.slogan{color:var(--muted);font-size:var(--fs-sm)}
+.form{display:flex;flex-direction:column;gap:12px;margin-top:12px}
+.input{display:flex;flex-direction:column;gap:6px}
+.input label{font-size:var(--fs-sm);color:var(--muted)}
+.input input{padding:10px 12px;border-radius:10px;border:1px solid var(--line-strong);background:#fff;outline:none}
+.input input:focus{border-color:#b9d6ff;box-shadow:0 0 0 3px rgba(11,130,221,.12)}
+.btn{display:inline-flex;align-items:center;justify-content:center;width:100%;
+  padding:12px 14px;border-radius:12px;border:1px solid #0f0f11;background:linear-gradient(180deg,#151515,#000);
+  color:#fff;font-weight:700;box-shadow:0 1px 0 rgba(255,255,255,.08) inset, 0 8px 18px rgba(0,0,0,.25);cursor:pointer}
+.btn:active{transform:translateY(1px)}
+a.link{color:#0B82DD;text-decoration:none}a.link:hover{text-decoration:underline}
+.meta{display:flex;justify-content:space-between;gap:12px;margin-top:16px;color:var(--muted);font-size:var(--fs-sm)}
+.meta a{color:inherit;text-decoration:none}
+.msg{display:none;margin-top:6px;padding:8px 10px;border-radius:10px;border:1px solid var(--line);font-size:var(--fs-sm)}
+.msg.err{display:block;background:#fff0f0;border-color:#ffd1d1;color:#8b1e1e}
+
+.right{display:none}
+@media(min-width:960px){
+  .right{display:block;position:relative}
+  .right::before{
+    content:"";position:absolute;inset:0;background:
+      radial-gradient(1100px 600px at 110% -10%, rgba(0,0,0,.35), transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, rgba(0,0,0,.35), transparent 60%),
+      linear-gradient(180deg,#0b0f14,#0b0f14);
+  }
+  .hero{position:absolute;inset:0;background:url('https://i.pinimg.com/1200x/f2/ce/e6/f2cee6af0acc1de4aeaf616e25d80e35.jpg') center/cover no-repeat;opacity:.28}
+  .hero-slot{position:absolute;inset:auto 0 28px 28px;color:#eaeef7}
+  .hero-slot h3{margin:0 0 6px;font-weight:600}
+  .hero-slot p{margin:0;opacity:.92}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <section class="left">
+    <div class="card" role="dialog" aria-modal="true">
+      <div class="header">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>Task Webster</h1>
+          <div class="slogan">Некультурные задачи для культурных людей</div>
+        </div>
+      </div>
+
+      <form id="form" class="form">
+        <div class="input">
+          <label for="email">Email</label>
+          <input id="email" type="email" autocomplete="username" placeholder="you@studio.com" required>
+        </div>
+        <div class="input">
+          <label for="pass">Пароль</label>
+          <input id="pass" type="password" autocomplete="new-password" placeholder="минимум 6 символов" required>
+        </div>
+        <button class="btn" type="submit">Создать аккаунт</button>
+        <div id="msg" class="msg"></div>
+        <div style="text-align:center;font-size:var(--fs-sm);margin-top:6px">
+          Уже есть аккаунт? <a class="link" href="./login.html">Войти</a>
+        </div>
+      </form>
+
+      <div class="meta">
+        <div>© 2025 · Webster</div>
+        <div><a href="#">Политика конфиденциальности</a> · <a href="#">Пользовательское соглашение</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="right" aria-hidden="true">
+    <div class="hero"></div>
+    <div class="hero-slot">
+      <h3>Task Webster</h3>
+      <p>Некультурные задачи для культурных людей</p>
+    </div>
+  </section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+const SUPABASE_URL="https://aayobnsqgzsmhwbtutyw.supabase.co";
+const SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFheW9ibnNxZ3pzbWh3YnR1dHl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE1MDkxNDEsImV4cCI6MjA3NzA4NTE0MX0.dNC_rYVPLk3etb2njI3agDE7wmmu4HQyBrkiyZ4ifoA";
+const supa = window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+
+const $=(s)=>document.querySelector(s);
+const msg=$("#msg");
+
+function showError(text){ msg.className='msg err'; msg.textContent=text; msg.style.display='block'; }
+
+$("#form").addEventListener("submit", async (e)=>{
+  e.preventDefault(); msg.style.display='none';
+  const email=$("#email").value.trim();
+  const password=$("#pass").value;
+  if(!email || !password){ showError("Укажите e-mail и пароль (≥6)."); return; }
+  try{
+    const { error:e1 } = await supa.auth.signUp({ email, password });
+    if(e1) throw e1;
+    const { data, error:e2 } = await supa.auth.signInWithPassword({ email, password });
+    if(e2) throw e2;
+    localStorage.setItem('tw_user', JSON.stringify({ id:data.user.id, email }));
+    location.href='./index.html';
+  }catch(err){ showError("Ошибка регистрации: "+err.message); }
+});
+</script>
+</body>
+</html>
