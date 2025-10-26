@@ -7,109 +7,176 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#F5F7FB;--shell:#fff;--text:#0B1220;--muted:#6B7380;--line:#E6E9F0;--line-strong:#D6DAE3;--primary:#0B82DD;--primary-ink:#fff;--shadow-1:0 8px 24px rgba(12,22,44,.06);--fs-xs:clamp(11px,.78vw,12px);--fs-sm:clamp(12px,.9vw,14px);--fs-md:clamp(14px,1.05vw,16px)}
-*{box-sizing:border-box}html,body{height:100%}body{margin:0;background:var(--bg);color:var(--text);font:400 var(--fs-md)/1.5 "Inter",system-ui}
-.auth{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(1000px 480px at 10% -10%,#e9f2ff 0%,rgba(255,255,255,0) 60%),var(--bg)}
-.card{width:min(720px,100%);background:var(--shell);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-1);padding:22px}
-.hdr{display:flex;gap:12px;align-items:center;margin-bottom:8px}.logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#7aa7ff,#5ec8ff)}
-h2{margin:0 0 6px}.tabs{display:flex;gap:8px;margin:8px 0 12px}
-.tab{padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;font-weight:600;cursor:pointer}.tab.active{border-color:#b9d6ff;background:#eef6ff}
-.input{display:flex;flex-direction:column;gap:6px;margin:10px 0}.input label{font-size:var(--fs-sm);color:var(--muted)}
-.input input{padding:12px 14px;border-radius:10px;border:1px solid var(--line-strong);background:#fff;outline:none}
+:root{
+  --bg:#F5F7FB; --shell:#fff; --text:#0B1220; --muted:#6B7380;
+  --line:#E6E9F0; --line-strong:#D6DAE3; --primary:#0B82DD; --primary-ink:#fff;
+  --shadow-1:0 8px 24px rgba(12,22,44,.06);
+  /* компактная типографика */
+  --fs-xs:clamp(11px,.78vw,12px); --fs-sm:clamp(12px,.9vw,13px); --fs-md:clamp(13px,1vw,15px);
+}
+*{box-sizing:border-box} html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:400 var(--fs-md)/1.45 "Inter",system-ui}
+/* центрируем экран */
+.auth{
+  min-height:100vh; display:grid; place-items:center; padding:20px;
+  background:
+    radial-gradient(900px 420px at 12% -10%,#e9f2ff 0%,rgba(255,255,255,0) 60%),
+    var(--bg);
+}
+.card{
+  width:min(520px,100%); /* компактнее */
+  background:var(--shell); border:1px solid var(--line);
+  border-radius:16px; box-shadow:var(--shadow-1); padding:20px;
+}
+.hdr{display:flex;gap:12px;align-items:center;margin-bottom:10px;text-align:left}
+.logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#7aa7ff,#5ec8ff)}
+h2{margin:0 0 4px}
+.note{font-size:var(--fs-sm);color:var(--muted)}
+
+/* вкладки */
+.tabs{display:flex;gap:8px;margin:10px 0 12px;justify-content:center} /* выровнял по центру */
+.tab{padding:6px 10px;border:1px solid var(--line);border-radius:10px;background:#fff;font-weight:600;cursor:pointer;font-size:var(--fs-sm)}
+.tab.active{border-color:#b9d6ff;background:#eef6ff}
+
+/* компактные поля */
+.input{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.input label{font-size:var(--fs-sm);color:var(--muted)}
+.input input{
+  padding:9px 12px; /* ниже высота */
+  border-radius:10px;border:1px solid var(--line-strong);background:#fff;outline:none;
+}
 .input input:focus{border-color:#b9d6ff;box-shadow:0 0 0 3px rgba(11,130,221,.12)}
-.btn{display:inline-flex;gap:8px;align-items:center;padding:10px 14px;border:1px solid var(--line-strong);border-radius:10px;background:#fff;font-weight:600;cursor:pointer}
+
+.btn{
+  display:inline-flex;gap:8px;align-items:center;
+  padding:9px 12px;border:1px solid var(--line-strong);
+  border-radius:10px;background:#fff;font-weight:600;cursor:pointer
+}
 .btn.primary{background:var(--primary);color:var(--primary-ink);border-color:transparent}
-.note{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
-.msg{margin-top:10px;font-size:var(--fs-sm);padding:10px 12px;border-radius:10px;border:1px solid var(--line);display:none}
+
+.msg{margin-top:10px;font-size:var(--fs-sm);padding:9px 12px;border-radius:10px;border:1px solid var(--line);display:none}
 .msg.ok{background:#ecfff0;border-color:#c6f3d2;color:#176c34}
 .msg.err{background:#fff0f0;border-color:#ffd1d1;color:#8b1e1e}
-@media (max-width:640px){.card{padding:16px}}
+
+.center-actions{display:flex;gap:10px;justify-content:center;align-items:center} /* центр кнопок */
+@media (max-width:480px){ .card{padding:16px} }
 </style>
 </head>
 <body>
 <section class="auth" aria-label="Аутентификация">
   <div class="card" role="dialog" aria-modal="true">
-    <div class="hdr"><div class="logo"></div><div><h2>Task Webster</h2><div class="note">Единое пространство проектов и задач</div></div></div>
-    <div class="tabs" role="tablist">
-      <button id="tab-login" class="tab active" aria-controls="pane-login" aria-selected="true">Вход</button>
-      <button id="tab-signup" class="tab" aria-controls="pane-signup" aria-selected="false">Регистрация</button>
-      <button id="tab-reset" class="tab" aria-controls="pane-reset" aria-selected="false">Сброс пароля</button>
+    <div class="hdr">
+      <div class="logo"></div>
+      <div>
+        <h2>Task Webster</h2>
+        <!-- новый слоган -->
+        <div class="note">Некультурные задачи для культурных людей</div>
+      </div>
     </div>
 
-    <!-- Вход -->
+    <div class="tabs" role="tablist">
+      <button id="tab-login"  class="tab active" aria-controls="pane-login"  aria-selected="true">Вход</button>
+      <button id="tab-signup" class="tab"         aria-controls="pane-signup" aria-selected="false">Регистрация</button>
+      <button id="tab-reset"  class="tab"         aria-controls="pane-reset"  aria-selected="false">Сброс пароля</button>
+    </div>
+
+    <!-- ВХОД -->
     <form id="pane-login" role="tabpanel" aria-labelledby="tab-login">
-      <div class="input"><label for="login-email">Email</label><input id="login-email" type="email" autocomplete="username" placeholder="you@studio.com" required></div>
-      <div class="input"><label for="login-pass">Пароль</label><input id="login-pass" type="password" autocomplete="current-password" placeholder="••••••••" required></div>
-      <div style="display:flex;gap:10px;justify-content:space-between;align-items:center">
-        <button type="submit" class="btn primary">Войти</button>
-        <a href="#" id="demo" style="text-decoration:none">Демо-вход</a>
+      <div class="input"><label for="login-email">Email</label>
+        <input id="login-email" type="email" autocomplete="username" placeholder="you@studio.com" required></div>
+      <div class="input"><label for="login-pass">Пароль</label>
+        <input id="login-pass" type="password" autocomplete="current-password" placeholder="•••••••" required></div>
+      <div class="center-actions">
+        <button type="submit" class="btn primary" id="btnLogin">Войти</button>
       </div>
       <div id="loginMsg" class="msg"></div>
     </form>
 
-    <!-- Регистрация -->
+    <!-- РЕГИСТРАЦИЯ -->
     <form id="pane-signup" role="tabpanel" aria-labelledby="tab-signup" hidden>
-      <div class="input"><label for="signup-email">Email</label><input id="signup-email" type="email" autocomplete="username" placeholder="you@studio.com"></div>
-      <div class="input"><label for="signup-pass">Пароль</label><input id="signup-pass" type="password" autocomplete="new-password" placeholder="минимум 6 символов"></div>
-      <button type="submit" class="btn primary">Создать аккаунт</button>
-      <div class="note">Подтверждение e-mail отключено — сразу попадёте в дашборд.</div>
+      <div class="input"><label for="signup-email">Email</label>
+        <input id="signup-email" type="email" autocomplete="username" placeholder="you@studio.com"></div>
+      <div class="input"><label for="signup-pass">Пароль</label>
+        <input id="signup-pass" type="password" autocomplete="new-password" placeholder="минимум 6 символов"></div>
+      <div class="center-actions">
+        <button type="submit" class="btn primary" id="btnSignup">Создать аккаунт</button>
+      </div>
       <div id="signupMsg" class="msg"></div>
     </form>
 
-    <!-- Сброс -->
+    <!-- СБРОС -->
     <form id="pane-reset" role="tabpanel" aria-labelledby="tab-reset" hidden>
-      <div class="input"><label for="reset-email">Email</label><input id="reset-email" type="email" autocomplete="username" placeholder="you@studio.com"></div>
-      <button type="submit" class="btn">Отправить ссылку на сброс</button>
+      <div class="input"><label for="reset-email">Email</label>
+        <input id="reset-email" type="email" autocomplete="username" placeholder="you@studio.com"></div>
+      <div class="center-actions">
+        <button type="submit" class="btn">Отправить ссылку на сброс</button>
+      </div>
       <div id="resetMsg" class="msg"></div>
     </form>
   </div>
 </section>
 
+<!-- Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
-const SUPABASE_URL="https://aayobnsqgzsmhwbtutyw.supabase.co";
-const SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFheW9ibnNxZ3pzbWh3YnR1dHl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE1MDkxNDEsImV4cCI6MjA3NzA4NTE0MX0.dNC_rYVPLk3etb2njI3agDE7wmmu4HQyBrkiyZ4ifoA";
-const supa = window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+/* === Supabase конфиг === */
+const SUPABASE_URL = "https://aayobnsqgzsmhwbtutyw.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFheW9ibnNxZ3pzbWh3YnR1dHl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE1MDkxNDEsImV4cCI6MjA3NzA4NTE0MX0.dNC_rYVPLk3etb2njI3agDE7wmmu4HQyBrkiyZ4ifoA";
+const supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-/* Tabs */
+/* Вкладки */
 const panes={login:document.getElementById('pane-login'),signup:document.getElementById('pane-signup'),reset:document.getElementById('pane-reset')};
 const tabs={login:document.getElementById('tab-login'),signup:document.getElementById('tab-signup'),reset:document.getElementById('tab-reset')};
 function act(name){Object.keys(panes).forEach(k=>{panes[k].hidden=(k!==name);tabs[k].classList.toggle('active',k===name);tabs[k].setAttribute('aria-selected',k===name?'true':'false');});}
-tabs.login.onclick=()=>act('login');tabs.signup.onclick=()=>act('signup');tabs.reset.onclick=()=>act('reset');
+tabs.login.onclick=()=>act('login'); tabs.signup.onclick=()=>act('signup'); tabs.reset.onclick=()=>act('reset');
 
-/* Helpers */
-const loginMsg=document.getElementById('loginMsg'), signupMsg=document.getElementById('signupMsg'), resetMsg=document.getElementById('resetMsg');
-function showMsg(el,type,text){el.className='msg '+(type||'');el.textContent=text;el.style.display='block';}
-function clr(el){el.style.display='none';el.textContent='';}
+/* Сообщения */
+const msgLogin=document.getElementById('loginMsg');
+const msgSignup=document.getElementById('signupMsg');
+const msgReset=document.getElementById('resetMsg');
+const show=(el,type,txt)=>{el.className='msg '+(type||''); el.textContent=txt; el.style.display='block';};
+const hide=(el)=>{el.style.display='none'; el.textContent='';};
 
-/* Login */
-panes.login.addEventListener('submit',async(e)=>{e.preventDefault();clr(loginMsg);
-  const email=document.getElementById('login-email').value.trim(), pass=document.getElementById('login-pass').value;
-  try{const {data,error}=await supa.auth.signInWithPassword({email,password:pass}); if(error) throw error;
-      localStorage.setItem('tw_user',JSON.stringify({id:data.user.id,email})); location.href='./index.html';
-  }catch(err){showMsg(loginMsg,'err','Ошибка входа: '+err.message);}
+/* Вход */
+panes.login.addEventListener('submit', async (e)=>{
+  e.preventDefault(); hide(msgLogin);
+  const email=document.getElementById('login-email').value.trim();
+  const pass=document.getElementById('login-pass').value;
+  try{
+    const { data, error } = await supa.auth.signInWithPassword({ email, password:pass });
+    if(error) throw error;
+    localStorage.setItem("tw_user", JSON.stringify({id:data.user.id, email}));
+    location.href = "./index.html"; // переход в дашборд
+  }catch(err){ show(msgLogin,'err','Ошибка входа: '+err.message); }
 });
 
-/* Signup → auto login */
-panes.signup.addEventListener('submit',async(e)=>{e.preventDefault();clr(signupMsg);
-  const email=document.getElementById('signup-email').value.trim(), pass=document.getElementById('signup-pass').value;
-  if(!email||!pass) return showMsg(signupMsg,'err','Укажите e-mail и пароль (≥6).');
-  try{const {error:e1}=await supa.auth.signUp({email,password:pass}); if(e1) throw e1;
-      const {data:e2,error:e3}=await supa.auth.signInWithPassword({email,password:pass}); if(e3) throw e3;
-      localStorage.setItem('tw_user',JSON.stringify({id:e2.user.id,email})); location.href='./index.html';
-  }catch(err){showMsg(signupMsg,'err','Ошибка регистрации: '+err.message);}
+/* Регистрация с авто-входом */
+panes.signup.addEventListener('submit', async (e)=>{
+  e.preventDefault(); hide(msgSignup);
+  const email=document.getElementById('signup-email').value.trim();
+  const pass=document.getElementById('signup-pass').value;
+  if(!email||!pass) return show(msgSignup,'err','Укажите e-mail и пароль (≥6).');
+  try{
+    const { error:e1 } = await supa.auth.signUp({ email, password:pass });
+    if(e1) throw e1;
+    const { data:d2, error:e2 } = await supa.auth.signInWithPassword({ email, password:pass });
+    if(e2) throw e2;
+    localStorage.setItem("tw_user", JSON.stringify({id:d2.user.id, email}));
+    location.href = "./index.html";
+  }catch(err){ show(msgSignup,'err','Ошибка регистрации: '+err.message); }
 });
 
-/* Reset */
-panes.reset.addEventListener('submit',async(e)=>{e.preventDefault();clr(resetMsg);
-  const email=document.getElementById('reset-email').value.trim(); if(!email) return showMsg(resetMsg,'err','Укажите e-mail.');
-  try{const {error}=await supa.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname}); if(error) throw error;
-      showMsg(resetMsg,'ok','Ссылка на сброс отправлена на '+email);
-  }catch(err){showMsg(resetMsg,'err','Не удалось отправить: '+err.message);}
+/* Сброс пароля */
+panes.reset.addEventListener('submit', async (e)=>{
+  e.preventDefault(); hide(msgReset);
+  const email=document.getElementById('reset-email').value.trim();
+  if(!email) return show(msgReset,'err','Укажите e-mail.');
+  try{
+    const { error } = await supa.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname });
+    if(error) throw error;
+    show(msgReset,'ok','Ссылка на сброс отправлена на '+email);
+  }catch(err){ show(msgReset,'err','Не удалось отправить: '+err.message); }
 });
-
-/* Демо-вход (на случай офлайн) */
-document.getElementById('demo').addEventListener('click',(e)=>{e.preventDefault();localStorage.setItem('tw_user',JSON.stringify({id:'demo',email:'demo@webster.studio'}));location.href='./index.html';});
 </script>
 </body>
 </html>
