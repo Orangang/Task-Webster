@@ -10,7 +10,7 @@
 :root{--bg:#F5F7FB;--shell:#fff;--text:#0B1220;--muted:#6B7380;--line:#E6E9F0;--line-strong:#D6DAE3;--primary:#0B82DD;--primary-ink:#fff;--tag-bg:#F4F7FE;--tag-line:#E6EBFA;--shadow-1:0 8px 24px rgba(12,22,44,.06);--fs-xs:clamp(11px,.78vw,12px);--fs-sm:clamp(12px,.9vw,14px);--fs-md:clamp(14px,1.05vw,16px)}
 *{box-sizing:border-box}html,body{height:100%}body{margin:0;background:var(--bg);color:var(--text);font:400 var(--fs-md)/1.5 "Inter",system-ui}
 .app{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
-.sidebar{background:var(--shell);border-right:1px solid var(--line);padding:16px;position:sticky;top:0;height:100vh;overflow:auto}
+.sidebar{background:var(--shell);border-right:1px solid var(--line);padding:16px;position:sticky;top:0;height:100vh;overflow:auпо}
 .brand{display:flex;gap:10px;align-items:center;margin-bottom:16px}.logo{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#7aa7ff,#5ec8ff)}
 .brand h1{margin:0;font-size:clamp(16px,1.25vw,18px)}
 .navsection{margin-top:8px}.navsection h3{font-size:var(--fs-xs);letter-spacing:.04em;color:var(--muted);margin:18px 8px 8px}
@@ -95,10 +95,10 @@ const STATUS={ todo:{label:"К выполнению",color:"#9aa4b2"}, progress:
 
 const state={ user:null, projects:[], tasks:[], view:"dashboard", currentProjectId:null };
 
-/* Gate — только при наличии сессии, иначе на auch.html */
+/* Gate — только при наличии сессии, иначе на auth.html */
 (async function gate(){
   const { data } = await supa.auth.getSession();
-  if(!data?.session){ localStorage.removeItem('tw_user'); location.href='./auch.html'; return; }
+  if(!data?.session){ localStorage.removeItem('tw_user'); location.href='./auth.html'; return; }
   state.user={id:data.session.user.id,email:data.session.user.email}; localStorage.setItem('tw_user',JSON.stringify(state.user));
   startApp();
 })();
@@ -152,7 +152,7 @@ function viewProjectList(pid){
     const val=(f==="due_at")?(e.target.value||null):e.target.value;
     const i=state.tasks.findIndex(t=>t.id===id); if(i>-1) state.tasks[i]={...state.tasks[i],[f]:val};
     try{ await updateTask(id,{[f]:val}); }catch(err){ alert("Ошибка сохранения: "+err.message); }
-    if(f==="status"){ const row=e.target.closest(".row"); const to=list.querySelector(`.group[data-group="${val}"]`); if(row&&to){ row.parentElement.removeChild(row); to.appendChild(row); $$(".group").forEach(sec=>{sec.querySelector("[data-count]").textContent=sec.querySelectorAll(".row").length;}); } }
+    if(f==="status"){ const row=e.target.closest(".row"); const по=list.querySelector(`.group[data-group="${val}"]`); if(row&&по){ row.parentElement.removeChild(row); по.appendChild(row); $$(".group").forEach(sec=>{sec.querySelector("[data-count]").textContent=sec.querySelectorAll(".row").length;}); } }
   };
 
   list.onclick=async(e)=>{
@@ -167,7 +167,7 @@ async function render(){ $("#userEmail").textContent=state.user.email||"—"; re
 async function openProject(pid){ state.view="project"; state.currentProjectId=pid; $$("#navProjects a").forEach(a=>a.classList.toggle("active",a.dataset.project===pid)); await fetchTasks(pid); await render(); }
 $("#btnNewProject").onclick=async()=>{ const name=prompt("Название проекта?"); if(!name) return; try{const p=await createProject(name); await fetchProjects(); await openProject(p.id);}catch(err){alert("Не удалось создать: "+err.message);} };
 $("#btnNewTask").onclick=async()=>{ if(!state.currentProjectId) return alert("Откройте проект"); const title=prompt("Заголовок задачи?"); if(!title) return; try{const t=await createTask(state.currentProjectId,title); const list=document.querySelector(".tasklist"); if(list){const sec=list.querySelector(`.group[data-group="todo"]`); sec.appendChild(rowTemplate(t)); sec.querySelector("[data-count]").textContent=sec.querySelectorAll(".row").length;}}catch(err){alert("Не удалось создать: "+err.message);} };
-$("#btnLogout").onclick=async()=>{ await supa.auth.signOut(); localStorage.removeItem('tw_user'); location.href='./auch.html'; };
+$("#btnLogout").onclick=async()=>{ await supa.auth.signOut(); localStorage.removeItem('tw_user'); location.href='./auth.html'; };
 $$(".sidebar .nav a[data-view]").forEach(a=>a.onclick=(e)=>{e.preventDefault();$$(".sidebar .nav a").forEach(x=>x.classList.remove("active"));a.classList.add("active");state.view="dashboard";render();});
 $("#search").oninput=async(e)=>{ const q=e.target.value.trim().toLowerCase(); if(!q){state.view="dashboard";render();return;} $("#bc").innerHTML=`<span>Поиск</span> › <b>${q}</b>`; const card=el(`<div class="card"><div class="card-h"><strong>Результаты поиска</strong></div><div class="card-b"></div></div>`); const body=card.querySelector(".card-b"); const {data}=await supa.from("tasks").select("*").ilike("title",`%${q}%`); const list=data||[]; if(!list.length){body.innerHTML=`<div class="small">Ничего не найдено</div>`;} else{const tbl=el(`<div class="tasklist"></div>`); tbl.append(el(`<div class="row-h"><div></div><div>Задача</div><div>Статус</div><div>Приоритет</div><div>Срок</div><div></div></div>`)); list.forEach(t=>tbl.append(el(`<div class="row"><div></div><div>${t.title}</div><div>${STATUS[t.status]?.label||t.status}</div><div><span class="priority ${prioClass(t.priority)}">${({low:"низкий",medium:"средний",high:"высокий",urgent:"срочно"})[t.priority]}</span></div><div>${t.due_at||'—'}</div><div></div></div>`))); body.append(tbl);} const view=$("#view"); view.innerHTML=""; view.append(card); };
 
@@ -176,3 +176,4 @@ async function startApp(){ $("#app").hidden=false; try{await fetchProjects();}ca
 </script>
 </body>
 </html>
+
