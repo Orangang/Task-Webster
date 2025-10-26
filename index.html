@@ -7,173 +7,325 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#F5F7FB;--shell:#fff;--text:#0B1220;--muted:#6B7380;--line:#E6E9F0;--line-strong:#D6DAE3;--primary:#0B82DD;--primary-ink:#fff;--tag-bg:#F4F7FE;--tag-line:#E6EBFA;--shadow-1:0 8px 24px rgba(12,22,44,.06);--fs-xs:clamp(11px,.78vw,12px);--fs-sm:clamp(12px,.9vw,14px);--fs-md:clamp(14px,1.05vw,16px)}
-*{box-sizing:border-box}html,body{height:100%}body{margin:0;background:var(--bg);color:var(--text);font:400 var(--fs-md)/1.5 "Inter",system-ui}
-.app{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
-.sidebar{background:var(--shell);border-right:1px solid var(--line);padding:16px;position:sticky;top:0;height:100vh;overflow:auпо}
-.brand{display:flex;gap:10px;align-items:center;margin-bottom:16px}.logo{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#7aa7ff,#5ec8ff)}
-.brand h1{margin:0;font-size:clamp(16px,1.25vw,18px)}
-.navsection{margin-top:8px}.navsection h3{font-size:var(--fs-xs);letter-spacing:.04em;color:var(--muted);margin:18px 8px 8px}
-.nav{display:flex;flex-direction:column;gap:6px}
-.nav a{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);padding:10px 12px;border-radius:10px;border:1px solid transparent}
-.nav a:hover{background:#f1f5ff;border-color:#e1e8ff}.nav a.active{background:#eef6ff;border-color:#d9e9ff;font-weight:600}
-.main{padding:20px}
-.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;background:linear-gradient(#F5F7FB 60%,rgba(245,247,251,.6));padding-bottom:10px}
-.breadcrumb{display:flex;gap:10px;align-items:center;color:var(--muted);font-size:var(--fs-sm)}
-.btn{display:inline-flex;gap:8px;align-items:center;padding:10px 14px;border:1px solid var(--line-strong);border-radius:10px;background:#fff;font-weight:600;cursor:pointer}
-.btn.primary{background:#0B82DD;color:#fff;border-color:transparent}
-.search{display:flex;gap:10px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;min-width:240px}
-.search input{border:none;outline:none;background:transparent}
-.card{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow-1)}
-.card .card-h{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--line)}
-.card .card-b{padding:8px 12px 12px}
-.small{font-size:var(--fs-sm);color:var(--muted)}
-.projects{display:grid;grid-template-columns:repeat(12,1fr);gap:12px;padding:12px}
-.project{grid-column:span 6;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;gap:10px;flex-direction:column}
-.project:hover{box-shadow:var(--shadow-1)}.badge{display:inline-flex;gap:6px;align-items:center;padding:4px 8px;border-radius:999px;background:var(--tag-bg);border:1px solid var(--tag-line);font-size:var(--fs-xs)}
-.tasklist{width:100%}.group{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:14px 0;background:#fff}
+:root{
+  --bg:#F5F7FB; --shell:#fff; --text:#0B1220; --muted:#6B7380;
+  --line:#E6E9F0; --line-strong:#D6DAE3; --accent:#0B82DD; --accent-dark:#0A66B2;
+  --tag-bg:#F4F7FE; --tag-line:#E6EBFA;
+  --radius:12px; --shadow:0 8px 24px rgba(12,22,44,.06);
+  --fs-xs:clamp(11px,.78vw,12px); --fs-sm:clamp(12px,.9vw,14px); --fs-md:clamp(14px,1.05vw,16px); --fs-lg:clamp(16px,1.25vw,18px);
+}
+*{box-sizing:border-box}html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:400 var(--fs-md)/1.5 "Inter",system-ui;display:flex;flex-direction:column}
+
+/* Header */
+header{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;background:var(--shell);box-shadow:var(--shadow);position:sticky;top:0;z-index:10}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#7aa7ff,#5ec8ff)}
+header h1{font-size:var(--fs-lg);margin:0}
+header .right{display:flex;gap:10px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--line-strong);border-radius:var(--radius);background:#fff;font-weight:600;cursor:pointer}
+.btn.primary{background:var(--accent);border-color:transparent;color:#fff}
+.btn.primary:hover{background:var(--accent-dark)}
+.badge{display:inline-flex;gap:6px;align-items:center;padding:4px 8px;border-radius:999px;background:var(--tag-bg);border:1px solid var(--tag-line);font-size:var(--fs-xs)}
+
+/* Layout */
+main{flex:1;display:grid;grid-template-columns:280px 1fr;gap:24px;padding:24px}
+.sidebar{background:var(--shell);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:16px}
+.sidebar h2{margin:0 0 4px;font-size:var(--fs-md)}
+.search{display:flex;gap:8px;align-items:center;border:1px solid var(--line);background:#fff;padding:8px 10px;border-radius:10px}
+.search input{border:none;outline:none;background:transparent;width:100%}
+.projects{display:flex;flex-direction:column;gap:8px;overflow:auto}
+.project{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:#fff;cursor:pointer}
+.project.active{border-color:var(--accent);outline:2px solid rgba(11,130,221,.15)}
+.project:hover{border-color:var(--accent)}
+.proj-actions{display:flex;gap:6px}
+.xs{padding:4px 8px;font-size:var(--fs-xs)}
+.addBtn{border:1px dashed var(--line-strong);background:#fff;border-radius:10px;padding:10px;text-align:center;font-weight:600;cursor:pointer}
+.addBtn:hover{background:#eef6ff;border-color:#b9d6ff}
+
+.content{background:var(--shell);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px}
+.toolbar{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.breadcrumb{color:var(--muted)}
+.group{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;margin-top:8px}
 .group-h{display:flex;gap:10px;align-items:center;padding:12px 14px;background:#FAFBFE;border-bottom:1px solid var(--line)}
-.group-h .dot{width:8px;height:8px;border-radius:50%}
-.row-h,.row{display:grid;grid-template-columns:24px 1.6fr 1.2fr .9fr .9fr 120px;gap:8px;align-items:center}
-.row-h{padding:10px 14px;color:var(--muted)}.row{padding:10px 14px;border-top:1px solid var(--line)}
-.priority{font-size:12px;padding:4px 8px;border-radius:999px;border:1px solid}
-.prio-low{color:#2b6cb0;background:#ebf5ff;border-color:#cfe6ff}
-.prio-medium{color:#8a6d1a;background:#fff7d6;border-color:#f3e6a1}
-.prio-high{color:#a12828;background:#ffe1e1;border-color:#ffc8c8}
-.prio-urgent{color:#fff;background:#E74C3C;border-color:#E74C3C}
-@media (max-width:640px){.app{grid-template-columns:80px 1fr}.sidebar .nav a span{display:none}.row-h,.row{grid-template-columns:24px 1.6fr 1fr .9fr 120px}}
-@media (max-width:480px){.projects .project{grid-column:span 12}.search{min-width:0;width:100%}}
+.dot{width:8px;height:8px;border-radius:50%}
+.rows{display:flex;flex-direction:column}
+.row-h,.row{display:grid;grid-template-columns:1.6fr 1.2fr .9fr .9fr 120px;gap:8px;align-items:center}
+.row-h{padding:10px 14px;color:var(--muted);background:#fff}
+.row{padding:10px 14px;border-top:1px solid var(--line);background:#fff}
+.row:hover{background:#fafcff}
+.row select,.row input[type="date"]{padding:6px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.del{justify-self:end}
+.empty{color:var(--muted);font-size:var(--fs-sm);padding:10px 14px}
+
+/* Responsive */
+@media(max-width:960px){main{grid-template-columns:1fr;gap:16px;padding:16px}}
+@media(max-width:640px){.row-h,.row{grid-template-columns:1.6fr 1fr .9fr 120px}}
 </style>
 </head>
 <body>
-<div id="app" class="app" hidden>
+<header>
+  <div class="brand">
+    <div class="logo"></div><h1>Task Webster</h1>
+  </div>
+  <div class="right">
+    <span id="userEmail" class="badge">—</span>
+    <button id="logout" class="btn primary">Выйти</button>
+  </div>
+</header>
+
+<main>
+  <!-- Сайдбар проектов -->
   <aside class="sidebar">
-    <div class="brand"><div class="logo"></div><h1>Task Webster</h1></div>
-    <div class="navsection">
-      <h3>ОСНОВНОЕ</h3>
-      <nav class="nav">
-        <a href="#" data-view="dashboard" class="active"><span>Дашборд</span></a>
-        <a href="#" data-view="settings"><span>Настройки</span></a>
-      </nav>
-    </div>
-    <div class="navsection">
-      <h3>ПРОЕКТЫ</h3>
-      <nav id="navProjects" class="nav"></nav>
-      <button id="btnNewProject" class="btn" style="width:100%;margin-top:8px">+ Новый проект</button>
-    </div>
-    <div class="navsection">
-      <h3>АККАУНТ</h3>
-      <div class="small" id="userEmail">—</div>
-      <button id="btnLogout" class="btn" style="width:100%;margin-top:8px">Выйти</button>
-    </div>
+    <h2>Проекты</h2>
+    <div class="search"><input id="projSearch" placeholder="Поиск проектов…"></div>
+    <div id="projects" class="projects" aria-live="polite"></div>
+    <div id="newProject" class="addBtn">+ Новый проект</div>
+    <!-- Подсказка по БД -->
+    <div class="badge" title="projects / tasks в Supabase">Сохранение — Supabase</div>
   </aside>
 
-  <main class="main">
-    <div class="topbar">
-      <div class="breadcrumb" id="bc"><span>Мои страницы</span> › <b>Дашборд</b></div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-        <div class="search"><input id="search" placeholder="Поиск проектов и задач…"></div>
-        <button id="btnNewTask" class="btn primary">+ Новая задача</button>
+  <!-- Контент задач -->
+  <section class="content">
+    <div class="toolbar">
+      <div class="breadcrumb" id="crumb">Мои страницы › <b>Выберите проект</b></div>
+      <div style="display:flex;gap:8px">
+        <button id="createTask" class="btn primary">+ Новая задача</button>
       </div>
     </div>
-    <div id="view" class="content"></div>
-  </main>
-</div>
+    <div id="taskWrap"></div>
+  </section>
+</main>
 
+<footer style="text-align:center;color:var(--muted);padding:12px 0;font-size:var(--fs-sm)">
+  © 2025 · Webster · <a href="#" style="color:inherit;text-decoration:none">Политика конфиденциальности</a> · <a href="#" style="color:inherit;text-decoration:none">Пользовательское соглашение</a>
+</footer>
+
+<!-- Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
+/* ===== Конфиг Supabase (твой проект) ===== */
 const SUPABASE_URL="https://aayobnsqgzsmhwbtutyw.supabase.co";
 const SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFheW9ibnNxZ3pzbWh3YnR1dHl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE1MDkxNDEsImV4cCI6MjA3NzA4NTE0MX0.dNC_rYVPLk3etb2njI3agDE7wmmu4HQyBrkiyZ4ifoA";
 const supa = window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 
-const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+/* ===== Справка по БД (создай один раз в Supabase SQL):
+-- projects
+create table if not exists projects(
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null,
+  name text not null,
+  key text,
+  created_at timestamp with time zone default now()
+);
+-- tasks
+create table if not exists tasks(
+  id uuid primary key default gen_random_uuid(),
+  project_id uuid not null references projects(id) on delete cascade,
+  user_id uuid not null,
+  title text not null,
+  status text not null default 'todo', -- todo|progress|review|done
+  priority text not null default 'medium', -- low|medium|high|urgent
+  due_at date,
+  description text,
+  created_at timestamp with time zone default now()
+);
+Политика RLS (включить) + policy:
+  for select/insert/update/delete using (auth.uid() = user_id)
+============================================== */
+
+/* ===== Локализация статусов ===== */
+const STATUS={
+  todo:{label:"К выполнению",color:"#9aa4b2"},
+  progress:{label:"В работе",color:"#5B8DEF"},
+  review:{label:"На проверке",color:"#F1C40F"},
+  done:{label:"Готово",color:"#84d9a2"}
+};
+const PRIORITY_LABEL={low:"низкий",medium:"средний",high:"высокий",urgent:"срочно"};
+
+/* ===== Глобальное состояние ===== */
+const state={ user:null, projects:[], tasks:[], currentProjectId:null };
+
+/* ===== Утилиты ===== */
+const $=s=>document.querySelector(s);
 function el(html){const t=document.createElement('template');t.innerHTML=html.trim();return t.content.firstElementChild;}
-function prioClass(p){return {low:"prio-low",medium:"prio-medium",high:"prio-high",urgent:"prio-urgent"}[p]||"prio-medium";}
+function byId(arr,id){return arr.find(x=>x.id===id);}
 
-/* Локализация статусов */
-const STATUS={ todo:{label:"К выполнению",color:"#9aa4b2"}, progress:{label:"В работе",color:"#5B8DEF"}, review:{label:"На проверке",color:"#F1C40F"}, done:{label:"Готово",color:"#84d9a2"} };
-
-const state={ user:null, projects:[], tasks:[], view:"dashboard", currentProjectId:null };
-
-/* Gate — только при наличии сессии, иначе на auth.html */
+/* ===== Gate: без сессии → login.html ===== */
 (async function gate(){
-  const { data } = await supa.auth.getSession();
-  if(!data?.session){ localStorage.removeItem('tw_user'); location.href='./auth.html'; return; }
-  state.user={id:data.session.user.id,email:data.session.user.email}; localStorage.setItem('tw_user',JSON.stringify(state.user));
-  startApp();
+  const { data:{ session } } = await supa.auth.getSession();
+  if(!session){ localStorage.removeItem('tw_user'); location.href='./login.html'; return; }
+  state.user={id:session.user.id,email:session.user.email};
+  $("#userEmail").textContent=state.user.email||"—";
+  await loadProjects();
 })();
 
-/* Data API */
-async function fetchProjects(){ const {data,error}=await supa.from("projects").select("*").order("created_at",{ascending:false}); if(error) throw error; state.projects=data||[]; return data;}
-async function createProject(name){ const key=name.split(/\s+/).map(s=>s[0]).join("").slice(0,3).toUpperCase(); const {data,error}=await supa.from("projects").insert({name,key,user_id:state.user.id}).select().single(); if(error) throw error; state.projects.unshift(data); return data;}
-async function fetchTasks(pid){ const {data,error}=await supa.from("tasks").select("*").eq("project_id",pid).order("created_at",{ascending:false}); if(error) throw error; state.tasks=data||[]; return data;}
-async function createTask(pid,title){ const payload={project_id:pid,user_id:state.user.id,title,status:"todo",priority:"medium",due_at:null,description:""}; const {data,error}=await supa.from("tasks").insert(payload).select().single(); if(error) throw error; state.tasks.unshift(data); return data;}
-async function updateTask(id,patch){ const {error}=await supa.from("tasks").update(patch).eq("id",id); if(error) throw error;}
-async function deleteTask(id){ const {error}=await supa.from("tasks").delete().eq("id",id); if(error) throw error;}
+/* ===== Выход ===== */
+$("#logout").onclick=async()=>{ await supa.auth.signOut(); localStorage.removeItem('tw_user'); location.href='./login.html'; };
 
-/* UI */
-function renderNavProjects(){ const wrap=$("#navProjects"); wrap.innerHTML=""; state.projects.forEach(p=>{const a=el(`<a href="#" data-project="${p.id}"><span>${p.name}</span></a>`); a.onclick=(e)=>{e.preventDefault();openProject(p.id);}; wrap.append(a);});}
-function viewDashboard(){ $("#bc").innerHTML=`<span>Мои страницы</span> › <b>Дашборд</b>`; const card=el(`<div class="card"><div class="card-h"><strong>Проекты</strong></div><div class="card-b"><div class="projects"></div></div></div>`); const grid=card.querySelector(".projects"); if(!state.projects.length){ grid.innerHTML=`<div class="small" style="padding:12px">Проектов ещё нет. Создайте новый.</div>`; return card;} state.projects.forEach(p=>{const count=state.tasks.filter(t=>t.project_id===p.id).length; const pr=el(`<div class="project" role="button" tabindex="0"><div style="display:flex;align-items:center;justify-content:space-between"><b>${p.name}</b><span class="badge">${p.key}</span></div><div class="small">Задач: ${count}</div></div>`); pr.onclick=()=>openProject(p.id); grid.append(pr);}); return card;}
-function rowTemplate(t){ return el(`<div class="row" data-id="${t.id}">
-  <div></div>
-  <div>${t.title}</div>
-  <div>
-    <select data-id="${t.id}" data-field="status" style="padding:6px;border:1px solid var(--line);border-radius:8px;background:#fff">
-      ${Object.keys(STATUS).map(s=>`<option value="${s}" ${s===t.status?'selected':''}>${STATUS[s].label}</option>`).join('')}
-    </select>
-  </div>
-  <div>
-    <select data-id="${t.id}" data-field="priority" style="padding:6px;border:1px solid var(--line);border-radius:8px;background:#fff">
-      ${['low','medium','high','urgent'].map(s=>`<option value="${s}" ${s===t.priority?'selected':''}>${({low:"низкий",medium:"средний",high:"высокий",urgent:"срочно"})[s]}</option>`).join('')}
-    </select>
-  </div>
-  <div><input data-id="${t.id}" data-field="due_at" type="date" value="${t.due_at||''}" style="padding:6px;border:1px solid var(--line);border-radius:8px;background:#fff"></div>
-  <div><button class="btn" data-del="${t.id}" style="padding:6px 10px">Удалить</button></div>
-</div>`); }
+/* ===== Загрузка данных ===== */
+async function loadProjects(){
+  const {data,error}=await supa.from("projects").select("*").eq("user_id",state.user.id).order("created_at",{ascending:false});
+  if(error){alert("Ошибка загрузки проектов: "+error.message);return;}
+  state.projects=data||[];
+  renderProjects();
+  // Открыть последний выбранный проект (из localStorage)
+  const last = localStorage.getItem('tw_last_project');
+  if(last && byId(state.projects,last)){ openProject(last); }
+}
 
-function viewProjectList(pid){
-  const p=state.projects.find(x=>x.id===pid); if(!p) return el(`<div></div>`);
-  $("#bc").innerHTML=`<span>Мои страницы</span> › <b>${p.name}</b>`;
-  const wrap=el(`<div class="card"><div class="card-h"><strong>${p.name} — Список</strong></div><div class="card-b"><div class="tasklist"></div></div></div>`);
-  const list=wrap.querySelector(".tasklist");
-  list.append(el(`<div class="row-h"><div></div><div>Задача</div><div>Статус</div><div>Приоритет</div><div>Срок</div><div>Действия</div></div>`));
+async function loadTasks(pid){
+  const {data,error}=await supa.from("tasks").select("*").eq("project_id",pid).order("created_at",{ascending:false});
+  if(error){alert("Ошибка загрузки задач: "+error.message);return;}
+  state.tasks=data||[];
+}
+
+/* ===== Рендер проектов ===== */
+function renderProjects(filter=""){
+  const wrap=$("#projects"); wrap.innerHTML="";
+  const list = state.projects.filter(p=>p.name.toLowerCase().includes(filter.toLowerCase()));
+  if(!list.length){wrap.append(el(`<div class="empty">Проектов нет</div>`)); return;}
+  list.forEach(p=>{
+    const item=el(`<div class="project" data-id="${p.id}">
+      <span>${p.name}</span>
+      <div class="proj-actions">
+        <button class="btn xs" data-act="rename">Переимен.</button>
+        <button class="btn xs" data-act="del">Удалить</button>
+      </div>
+    </div>`);
+    if(p.id===state.currentProjectId) item.classList.add("active");
+    item.addEventListener("click",(e)=>{ if(e.target.dataset.act) return; openProject(p.id); });
+    item.querySelector('[data-act="rename"]').onclick=async(e)=>{
+      e.stopPropagation();
+      const name=prompt("Новое имя проекта:",p.name); if(!name||name===p.name) return;
+      const {error}=await supa.from("projects").update({name}).eq("id",p.id);
+      if(error) return alert("Не удалось переименовать: "+error.message);
+      p.name=name; renderProjects($("#projSearch").value); if(p.id===state.currentProjectId) $("#crumb").innerHTML=`Мои страницы › <b>${p.name}</b>`;
+    };
+    item.querySelector('[data-act="del"]').onclick=async(e)=>{
+      e.stopPropagation();
+      if(!confirm("Удалить проект и все его задачи?")) return;
+      const {error}=await supa.from("projects").delete().eq("id",p.id);
+      if(error) return alert("Не удалось удалить: "+error.message);
+      state.projects=state.projects.filter(x=>x.id!==p.id);
+      if(state.currentProjectId===p.id){ state.currentProjectId=null; $("#taskWrap").innerHTML=""; $("#crumb").innerHTML=`Мои страницы › <b>Выберите проект</b>`; }
+      renderProjects($("#projSearch").value);
+    };
+    wrap.append(item);
+  });
+}
+
+/* ===== Создание проекта ===== */
+$("#newProject").onclick=async()=>{
+  const name=prompt("Название проекта?"); if(!name) return;
+  const key=name.split(/\s+/).map(s=>s[0]).join("").slice(0,3).toUpperCase();
+  const {data,error}=await supa.from("projects").insert({name,key,user_id:state.user.id}).select().single();
+  if(error){alert("Не удалось создать проект: "+error.message);return;}
+  state.projects.unshift(data); renderProjects($("#projSearch").value); openProject(data.id);
+};
+
+/* ===== Открыть проект ===== */
+async function openProject(pid){
+  state.currentProjectId=pid; localStorage.setItem('tw_last_project',pid);
+  document.querySelectorAll(".project").forEach(n=>n.classList.toggle("active",n.dataset.id===pid));
+  const p=byId(state.projects,pid); $("#crumb").innerHTML=`Мои страницы › <b>${p?.name||"Проект"}</b>`;
+  await loadTasks(pid); renderTasks();
+}
+
+/* ===== Рендер задач (группы по статусу) ===== */
+function renderTasks(){
+  const wrap=$("#taskWrap"); wrap.innerHTML="";
+  if(!state.currentProjectId){ wrap.append(el(`<div class="empty">Сначала выберите проект</div>`)); return; }
+
+  const list=el(`<div class="rows"></div>`);
   const groups=Object.keys(STATUS);
+
+  // Заголовок таблицы
+  list.append(el(`<div class="row-h"><div>Задача</div><div>Статус</div><div>Приоритет</div><div>Срок</div><div>Действия</div></div>`));
+
+  // По группам рендерим блоки
   groups.forEach(g=>{
-    const items=state.tasks.filter(t=>t.project_id===pid && t.status===g);
-    const sec=el(`<section class="group" data-group="${g}"></section>`);
-    sec.append(el(`<div class="group-h"><div class="dot" style="background:${STATUS[g].color}"></div><strong>${STATUS[g].label.toUpperCase()}</strong><span class="small" data-count style="margin-left:auto">${items.length}</span></div>`));
-    items.forEach(t=>sec.append(rowTemplate(t)));
-    list.append(sec);
+    const items=state.tasks.filter(t=>t.status===g);
+    const sec=el(`<section class="group" data-group="${g}">
+      <div class="group-h"><div class="dot" style="background:${STATUS[g].color}"></div><b>${STATUS[g].label.toUpperCase()}</b><span class="badge" style="margin-left:auto"><span data-count>${items.length}</span></span></div>
+      <div class="rows" data-rows></div>
+    </section>`);
+    const body=sec.querySelector("[data-rows]");
+    if(!items.length) body.append(el(`<div class="empty">Пусто</div>`));
+    items.forEach(t=>body.append(taskRow(t)));
+    wrap.append(sec);
   });
 
-  // изменения + мгновенный перенос
-  list.onchange=async(e)=>{
+  // Действия внутри списка
+  wrap.onchange=async(e)=>{
     const f=e.target.dataset.field, id=e.target.dataset.id; if(!f||!id) return;
     const val=(f==="due_at")?(e.target.value||null):e.target.value;
     const i=state.tasks.findIndex(t=>t.id===id); if(i>-1) state.tasks[i]={...state.tasks[i],[f]:val};
-    try{ await updateTask(id,{[f]:val}); }catch(err){ alert("Ошибка сохранения: "+err.message); }
-    if(f==="status"){ const row=e.target.closest(".row"); const по=list.querySelector(`.group[data-group="${val}"]`); if(row&&по){ row.parentElement.removeChild(row); по.appendChild(row); $$(".group").forEach(sec=>{sec.querySelector("[data-count]").textContent=sec.querySelectorAll(".row").length;}); } }
+    try{ await supa.from("tasks").update({[f]:val}).eq("id",id); }catch(err){ alert("Ошибка сохранения: "+err.message); return; }
+    // Мгновенное перемещение при смене статуса
+    if(f==="status"){ moveRowInstant(e.target.closest(".row"), val); }
   };
 
-  list.onclick=async(e)=>{
+  wrap.onclick=async(e)=>{
     const id=e.target.dataset.del; if(!id) return;
-    if(confirm("Удалить задачу?")){ try{ await deleteTask(id); const row=list.querySelector(`.row[data-id="${id}"]`); const sec=row?.closest(".group"); row?.remove(); if(sec){sec.querySelector("[data-count]").textContent=sec.querySelectorAll(".row").length;} state.tasks=state.tasks.filter(t=>t.id!==id);}catch(err){alert("Ошибка удаления: "+err.message);} }
+    if(!confirm("Удалить задачу?")) return;
+    try{ await supa.from("tasks").delete().eq("id",id); }catch(err){ return alert("Ошибка удаления: "+err.message); }
+    state.tasks=state.tasks.filter(t=>t.id!==id);
+    const row=e.target.closest(".row"); const sec=row.closest(".group");
+    row.remove(); updateGroupCount(sec);
+    if(!sec.querySelector(".row")) sec.querySelector("[data-rows]").innerHTML='<div class="empty">Пусто</div>';
   };
-  return wrap;
 }
 
-/* Навигация/действия */
-async function render(){ $("#userEmail").textContent=state.user.email||"—"; renderNavProjects(); const view=$("#view"); view.innerHTML=""; view.append(state.view==="dashboard"?viewDashboard():viewProjectList(state.currentProjectId)); }
-async function openProject(pid){ state.view="project"; state.currentProjectId=pid; $$("#navProjects a").forEach(a=>a.classList.toggle("active",a.dataset.project===pid)); await fetchTasks(pid); await render(); }
-$("#btnNewProject").onclick=async()=>{ const name=prompt("Название проекта?"); if(!name) return; try{const p=await createProject(name); await fetchProjects(); await openProject(p.id);}catch(err){alert("Не удалось создать: "+err.message);} };
-$("#btnNewTask").onclick=async()=>{ if(!state.currentProjectId) return alert("Откройте проект"); const title=prompt("Заголовок задачи?"); if(!title) return; try{const t=await createTask(state.currentProjectId,title); const list=document.querySelector(".tasklist"); if(list){const sec=list.querySelector(`.group[data-group="todo"]`); sec.appendChild(rowTemplate(t)); sec.querySelector("[data-count]").textContent=sec.querySelectorAll(".row").length;}}catch(err){alert("Не удалось создать: "+err.message);} };
-$("#btnLogout").onclick=async()=>{ await supa.auth.signOut(); localStorage.removeItem('tw_user'); location.href='./auth.html'; };
-$$(".sidebar .nav a[data-view]").forEach(a=>a.onclick=(e)=>{e.preventDefault();$$(".sidebar .nav a").forEach(x=>x.classList.remove("active"));a.classList.add("active");state.view="dashboard";render();});
-$("#search").oninput=async(e)=>{ const q=e.target.value.trim().toLowerCase(); if(!q){state.view="dashboard";render();return;} $("#bc").innerHTML=`<span>Поиск</span> › <b>${q}</b>`; const card=el(`<div class="card"><div class="card-h"><strong>Результаты поиска</strong></div><div class="card-b"></div></div>`); const body=card.querySelector(".card-b"); const {data}=await supa.from("tasks").select("*").ilike("title",`%${q}%`); const list=data||[]; if(!list.length){body.innerHTML=`<div class="small">Ничего не найдено</div>`;} else{const tbl=el(`<div class="tasklist"></div>`); tbl.append(el(`<div class="row-h"><div></div><div>Задача</div><div>Статус</div><div>Приоритет</div><div>Срок</div><div></div></div>`)); list.forEach(t=>tbl.append(el(`<div class="row"><div></div><div>${t.title}</div><div>${STATUS[t.status]?.label||t.status}</div><div><span class="priority ${prioClass(t.priority)}">${({low:"низкий",medium:"средний",high:"высокий",urgent:"срочно"})[t.priority]}</span></div><div>${t.due_at||'—'}</div><div></div></div>`))); body.append(tbl);} const view=$("#view"); view.innerHTML=""; view.append(card); };
+/* ===== Создание задачи ===== */
+$("#createTask").onclick=async()=>{
+  if(!state.currentProjectId) return alert("Сначала выберите проект");
+  const title=prompt("Заголовок задачи?"); if(!title) return;
+  const payload={project_id:state.currentProjectId,user_id:state.user.id,title,status:"todo",priority:"medium",due_at:null,description:""};
+  const {data,error}=await supa.from("tasks").insert(payload).select().single();
+  if(error){alert("Не удалось создать: "+error.message);return;}
+  state.tasks.unshift(data);
 
-/* Start */
-async function startApp(){ $("#app").hidden=false; try{await fetchProjects();}catch(e){console.error(e);} state.view="dashboard"; state.currentProjectId=state.projects[0]?.id||null; if(state.currentProjectId) await fetchTasks(state.currentProjectId); render(); }
+  // Мгновенно добавим в DOM (группа todo)
+  const todo=document.querySelector('.group[data-group="todo"] [data-rows]');
+  if(todo){ if(todo.querySelector(".empty")) todo.innerHTML=""; todo.prepend(taskRow(data)); updateGroupCount(todo.closest(".group")); }
+};
+
+/* ===== Строка задачи ===== */
+function taskRow(t){
+  return el(`<div class="row" data-id="${t.id}">
+    <div>${t.title}</div>
+    <div>
+      <select data-id="${t.id}" data-field="status">
+        ${Object.keys(STATUS).map(s=>`<option value="${s}" ${s===t.status?'selected':''}>${STATUS[s].label}</option>`).join('')}
+      </select>
+    </div>
+    <div>
+      <select data-id="${t.id}" data-field="priority">
+        ${['low','medium','high','urgent'].map(s=>`<option value="${s}" ${s===t.priority?'selected':''}>${PRIORITY_LABEL[s]}</option>`).join('')}
+      </select>
+    </div>
+    <div><input type="date" data-id="${t.id}" data-field="due_at" value="${t.due_at||''}"></div>
+    <div class="del"><button class="btn xs" data-del="${t.id}">Удалить</button></div>
+  </div>`);
+}
+
+/* ===== Перемещение строки по DOM и обновление счётчиков ===== */
+function moveRowInstant(row, toStatus){
+  const wrap=document.querySelector(`.group[data-group="${toStatus}"] [data-rows]`);
+  const fromGroup=row.closest(".group");
+  if(wrap){
+    if(wrap.querySelector(".empty")) wrap.innerHTML="";
+    wrap.prepend(row);
+    updateGroupCount(fromGroup);
+    updateGroupCount(wrap.closest(".group"));
+    if(!fromGroup.querySelector(".row")) fromGroup.querySelector("[data-rows]").innerHTML='<div class="empty">Пусто</div>';
+  }
+}
+function updateGroupCount(sec){ sec.querySelector("[data-count]").textContent=sec.querySelectorAll(".row").length; }
+
+/* ===== Поиск по проектам ===== */
+$("#projSearch").oninput=(e)=>{ renderProjects(e.target.value.trim()); };
 </script>
 </body>
 </html>
-
