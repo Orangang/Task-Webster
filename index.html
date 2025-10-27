@@ -12,13 +12,17 @@
   --line:#E6E9F0; --line-2:#DDE2EE; --accent:#0B82DD; --accent-2:#2B95F9;
   --good:#3BB273; --warn:#F1C40F; --bad:#E74C3C; --tag:#F4F7FE; --tag-line:#E6EBFA;
   --shadow:0 10px 28px rgba(12,22,44,.06); --radius:12px;
-  --fs-xs:clamp(11px,.78vw,12px); --fs-sm:clamp(12px,.9vw,14px);
-  --fs-md:clamp(14px,1.05vw,16px); --fs-lg:clamp(18px,1.35vw,22px);
+
+  /* компактный кегль по всему приложению */
+  --fs-xs:11px;
+  --fs-sm:12px;
+  --fs-md:13.5px;
+  --fs-lg:16px;
 }
 *{box-sizing:border-box} html,body{height:100%}
-body{margin:0;background:var(--bg);color:var(--text);font:400 var(--fs-md)/1.5 "Inter",system-ui;}
+body{margin:0;background:var(--bg);color:var(--text);font:400 var(--fs-md)/1.5 "Inter",system-ui}
 
-/* ====== ШАПКА ====== */
+/* ===== ШАПКА ===== */
 .app{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
 header{
   grid-column:1 / -1; position:sticky; top:0; z-index:20;
@@ -32,43 +36,66 @@ h1{margin:0;font-size:var(--fs-lg)}
 .logout{background:var(--accent);border:none;color:#fff;font-weight:600;padding:8px 12px;border-radius:10px;cursor:pointer}
 .logout:hover{opacity:.9}
 
-/* ====== Сайдбар (Main Menu + Projects) ====== */
+/* ===== Сайдбар (Main Menu + Projects) ===== */
 .aside{
   background:var(--shell); border-right:1px solid var(--line);
-  padding:16px; display:flex; flex-direction:column; gap:18px;
+  /* меньше отступов и интервалов */
+  padding:12px; display:flex; flex-direction:column; gap:12px;
 }
-.menu h3, .projects h3{margin:0 0 10px;font-size:var(--fs-sm);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.menu h3, .projects h3{
+  margin:0 0 6px; font-size:11px; color:var(--muted);
+  text-transform:uppercase; letter-spacing:.06em
+}
 .menu .item{
-  display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:10px; cursor:pointer;
+  display:flex; align-items:center; gap:10px; padding:6px 8px;
+  border-radius:10px; cursor:pointer;
 }
 .menu .item:hover{background:var(--panel)}
-.icon{width:22px;height:22px;border-radius:6px;background:#EDF2FA;border:1px solid var(--line)}
-.search{display:flex;gap:8px;align-items:center;border:1px solid var(--line);background:#fff;padding:8px 10px;border-radius:10px}
-.search input{border:none;outline:none;background:transparent;width:100%}
-.list{display:flex;flex-direction:column;gap:8px;max-height:45vh;overflow:auto}
-.proj{display:flex;justify-content:space-between;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);padding:8px 10px;border-radius:10px;cursor:pointer}
+.icon{width:20px;height:20px;border-radius:6px;background:#EDF2FA;border:1px solid var(--line)}
+
+.search{display:flex;gap:8px;align-items:center;border:1px solid var(--line);background:#fff;padding:6px 8px;border-radius:10px}
+.search input{border:none;outline:none;background:transparent;width:100%;font-size:12px}
+
+/* список проектов — компактный, однострочно с многоточием */
+.list{display:flex;flex-direction:column;gap:6px;max-height:46vh;overflow:auto}
+.proj{
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+  background:#fff;border:1px solid var(--line);padding:6px 8px;border-radius:8px;cursor:pointer
+}
+.proj>span{
+  font-size:12px; line-height:1.2;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis; /* длинные имена с … */
+  flex:1;
+}
 .proj.active{border-color:var(--accent);outline:2px solid rgba(11,130,221,.12)}
 .proj:hover{border-color:var(--accent)}
 .proj-actions{display:flex;gap:6px}
-.btn-xs{padding:4px 8px;border:1px solid var(--line-2);background:#fff;border-radius:8px;font-size:var(--fs-xs);cursor:pointer}
-.add-proj{margin-top:6px;border:1px dashed var(--line-2);padding:10px;border-radius:10px;background:#fff;font-weight:600;text-align:center;cursor:pointer}
+
+/* тонкие кнопки действий */
+.btn-xs{padding:2px 6px;border:1px solid var(--line-2);background:#fff;border-radius:7px;font-size:11px;cursor:pointer}
+
+/* кнопка создания — ниже и компактнее */
+.add-proj{margin-top:6px;border:1px dashed var(--line-2);padding:8px;border-radius:8px;background:#fff;font-weight:600;text-align:center;cursor:pointer}
 .add-proj:hover{background:#EEF6FF;border-color:#BEDCFF}
 
-/* ====== Контент ====== */
+/* аккуратный скролл */
+.list::-webkit-scrollbar{width:8px;height:8px}
+.list::-webkit-scrollbar-thumb{background:#D9DFEA;border-radius:8px}
+.list::-webkit-scrollbar-track{background:transparent}
+
+/* на очень широких — слегка шире колонка */
+@media(min-width:1280px){ .app{grid-template-columns:270px 1fr} }
+
+/* ===== Контент ===== */
 .content{background:transparent;padding:18px}
-.topbar{
-  display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:10px;
-}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:10px}
 .breadcrumb{color:var(--muted)}
 .tabs{display:flex;gap:6px}
-.tab{padding:6px 10px;border:1px solid var(--line);border-radius:10px;background:#fff;font-weight:600;cursor:pointer}
+.tab{padding:6px 10px;border:1px solid var(--line);border-radius:10px;background:#fff;font-weight:600;cursor:pointer;font-size:12px}
 .tab.active{background:#EEF6FF;border-color:#BEDCFF}
 .newTask{background:var(--accent);border:none;color:#fff;border-radius:10px;padding:8px 12px;font-weight:600;cursor:pointer}
 
-.panel{
-  background:var(--shell);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);
-  padding:10px;
-}
+.panel{background:var(--shell);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:10px}
 .group{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;margin:10px 0}
 .group-h{display:flex;gap:10px;align-items:center;padding:12px 14px;background:#FAFBFE;border-bottom:1px solid var(--line)}
 .dot{width:8px;height:8px;border-radius:50%}
@@ -79,9 +106,7 @@ h1{margin:0;font-size:var(--fs-lg)}
 .tr{padding:8px 14px;border-top:1px solid var(--line);background:#fff}
 .tr:hover{background:#FAFCFF}
 .chk{display:flex;align-items:center;justify-content:center}
-.input, .select, .date{
-  width:100%;padding:8px 10px;border:1px solid var(--line-2);border-radius:10px;background:#fff;outline:none
-}
+.input,.select,.date{width:100%;padding:8px 10px;border:1px solid var(--line-2);border-radius:10px;background:#fff;outline:none}
 .badge{display:inline-flex;gap:6px;align-items:center;padding:4px 8px;border-radius:999px;background:var(--tag);border:1px solid var(--tag-line);font-size:var(--fs-xs)}
 .people{display:flex;gap:-6px;align-items:center}
 .avatar{width:26px;height:26px;border-radius:50%;display:inline-grid;place-items:center;font-size:11px;font-weight:700;color:#fff;border:2px solid #fff}
@@ -89,7 +114,7 @@ h1{margin:0;font-size:var(--fs-lg)}
 .btn-del{padding:6px 10px;border:1px solid var(--line-2);background:#fff;border-radius:10px;font-size:var(--fs-sm);cursor:pointer}
 .empty{color:var(--muted);font-size:var(--fs-sm);padding:12px 14px}
 
-/* Responsive */
+/* ===== Адаптив ===== */
 @media (max-width:960px){
   .app{grid-template-columns:1fr}
   .aside{order:2}
@@ -103,6 +128,7 @@ h1{margin:0;font-size:var(--fs-lg)}
 footer{color:var(--muted);text-align:center;font-size:var(--fs-sm);padding:16px}
 footer a{color:inherit;text-decoration:none}
 </style>
+
 </head>
 <body>
 <!-- Header -->
@@ -183,7 +209,7 @@ const S = { user:null, projects:[], tasks:[], pid:null };
 /* ===== Утилиты ===== */
 const $=s=>document.querySelector(s);
 const el=(h)=>{const t=document.createElement('template');t.innerHTML=h.trim();return t.content.firstElementChild;}
-const fmt=(d)=>d?new Date(d).toISOString().slice(0,10):"";
+const fmt=(d)=>d?new Дате(d).toISOString().slice(0,10):"";
 const initials=(name)=>name.split(/\s+/).map(s=>s[0]||"").join("").slice(0,2).toUpperCase();
 const colorFor=(str)=>{let h=0;for(const c of str)h=(h*31+c.charCodeAt(0))&0xffff;return `hsl(${h%360} 70% 45%)`;}
 function avatar(name){return el(`<span class="avatar" title="${name}" style="background:${colorFor(name)}">${initials(name)}</span>`);}
@@ -389,3 +415,4 @@ function escapeHtml(s){return (s||"").replace(/[&<>"']/g,m=>({ '&':'&amp;','<':'
 </script>
 </body>
 </html>
+
