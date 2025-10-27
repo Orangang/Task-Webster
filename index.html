@@ -2,330 +2,390 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Task Webster · Дашборд</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#F5F7FB; --shell:#fff; --text:#0B1220; --muted:#6B7380;
-  --line:#E6E9F0; --line-strong:#D6DAE3; --accent:#0B82DD; --accent-dark:#0A66B2;
-  --tag-bg:#F4F7FE; --tag-line:#E6EBFA;
-  --radius:12px; --shadow:0 8px 24px rgba(12,22,44,.06);
-  --fs-xs:clamp(11px,.78vw,12px); --fs-sm:clamp(12px,.9vw,14px); --fs-md:clamp(14px,1.05vw,16px); --fs-lg:clamp(16px,1.25vw,18px);
+  --bg:#F5F7FB; --shell:#fff; --panel:#FBFCFF; --text:#0B1220; --muted:#6B7380;
+  --line:#E6E9F0; --line-2:#DDE2EE; --accent:#0B82DD; --accent-2:#2B95F9;
+  --good:#3BB273; --warn:#F1C40F; --bad:#E74C3C; --tag:#F4F7FE; --tag-line:#E6EBFA;
+  --shadow:0 10px 28px rgba(12,22,44,.06); --radius:12px;
+  --fs-xs:clamp(11px,.78vw,12px); --fs-sm:clamp(12px,.9vw,14px);
+  --fs-md:clamp(14px,1.05vw,16px); --fs-lg:clamp(18px,1.35vw,22px);
 }
-*{box-sizing:border-box}html,body{height:100%}
-body{margin:0;background:var(--bg);color:var(--text);font:400 var(--fs-md)/1.5 "Inter",system-ui;display:flex;flex-direction:column}
+*{box-sizing:border-box} html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:400 var(--fs-md)/1.5 "Inter",system-ui;}
 
-/* Header */
-header{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;background:var(--shell);box-shadow:var(--shadow);position:sticky;top:0;z-index:10}
+/* ====== ШАПКА ====== */
+.app{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+header{
+  grid-column:1 / -1; position:sticky; top:0; z-index:20;
+  background:var(--shell); box-shadow:var(--shadow); padding:12px 18px;
+  display:flex; align-items:center; justify-content:space-between;
+}
 .brand{display:flex;align-items:center;gap:10px}
 .logo{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#7aa7ff,#5ec8ff)}
-header h1{font-size:var(--fs-lg);margin:0}
-header .right{display:flex;gap:10px;align-items:center}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--line-strong);border-radius:var(--radius);background:#fff;font-weight:600;cursor:pointer}
-.btn.primary{background:var(--accent);border-color:transparent;color:#fff}
-.btn.primary:hover{background:var(--accent-dark)}
-.badge{display:inline-flex;gap:6px;align-items:center;padding:4px 8px;border-radius:999px;background:var(--tag-bg);border:1px solid var(--tag-line);font-size:var(--fs-xs)}
+h1{margin:0;font-size:var(--fs-lg)}
+.user-chip{background:#fff;border:1px solid var(--line);padding:6px 10px;border-radius:999px}
+.logout{background:var(--accent);border:none;color:#fff;font-weight:600;padding:8px 12px;border-radius:10px;cursor:pointer}
+.logout:hover{opacity:.9}
 
-/* Layout */
-main{flex:1;display:grid;grid-template-columns:280px 1fr;gap:24px;padding:24px}
-.sidebar{background:var(--shell);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:16px}
-.sidebar h2{margin:0 0 4px;font-size:var(--fs-md)}
+/* ====== Сайдбар (Main Menu + Projects) ====== */
+.aside{
+  background:var(--shell); border-right:1px solid var(--line);
+  padding:16px; display:flex; flex-direction:column; gap:18px;
+}
+.menu h3, .projects h3{margin:0 0 10px;font-size:var(--fs-sm);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.menu .item{
+  display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:10px; cursor:pointer;
+}
+.menu .item:hover{background:var(--panel)}
+.icon{width:22px;height:22px;border-radius:6px;background:#EDF2FA;border:1px solid var(--line)}
 .search{display:flex;gap:8px;align-items:center;border:1px solid var(--line);background:#fff;padding:8px 10px;border-radius:10px}
 .search input{border:none;outline:none;background:transparent;width:100%}
-.projects{display:flex;flex-direction:column;gap:8px;overflow:auto}
-.project{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:#fff;cursor:pointer}
-.project.active{border-color:var(--accent);outline:2px solid rgba(11,130,221,.15)}
-.project:hover{border-color:var(--accent)}
+.list{display:flex;flex-direction:column;gap:8px;max-height:45vh;overflow:auto}
+.proj{display:flex;justify-content:space-between;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);padding:8px 10px;border-radius:10px;cursor:pointer}
+.proj.active{border-color:var(--accent);outline:2px solid rgba(11,130,221,.12)}
+.proj:hover{border-color:var(--accent)}
 .proj-actions{display:flex;gap:6px}
-.xs{padding:4px 8px;font-size:var(--fs-xs)}
-.addBtn{border:1px dashed var(--line-strong);background:#fff;border-radius:10px;padding:10px;text-align:center;font-weight:600;cursor:pointer}
-.addBtn:hover{background:#eef6ff;border-color:#b9d6ff}
+.btn-xs{padding:4px 8px;border:1px solid var(--line-2);background:#fff;border-radius:8px;font-size:var(--fs-xs);cursor:pointer}
+.add-proj{margin-top:6px;border:1px dashed var(--line-2);padding:10px;border-radius:10px;background:#fff;font-weight:600;text-align:center;cursor:pointer}
+.add-proj:hover{background:#EEF6FF;border-color:#BEDCFF}
 
-.content{background:var(--shell);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px}
-.toolbar{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+/* ====== Контент ====== */
+.content{background:transparent;padding:18px}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:10px;
+}
 .breadcrumb{color:var(--muted)}
-.group{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;margin-top:8px}
+.tabs{display:flex;gap:6px}
+.tab{padding:6px 10px;border:1px solid var(--line);border-radius:10px;background:#fff;font-weight:600;cursor:pointer}
+.tab.active{background:#EEF6FF;border-color:#BEDCFF}
+.newTask{background:var(--accent);border:none;color:#fff;border-radius:10px;padding:8px 12px;font-weight:600;cursor:pointer}
+
+.panel{
+  background:var(--shell);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:10px;
+}
+.group{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;margin:10px 0}
 .group-h{display:flex;gap:10px;align-items:center;padding:12px 14px;background:#FAFBFE;border-bottom:1px solid var(--line)}
 .dot{width:8px;height:8px;border-radius:50%}
-.rows{display:flex;flex-direction:column}
-.row-h,.row{display:grid;grid-template-columns:1.6fr 1.2fr .9fr .9fr 120px;gap:8px;align-items:center}
-.row-h{padding:10px 14px;color:var(--muted);background:#fff}
-.row{padding:10px 14px;border-top:1px solid var(--line);background:#fff}
-.row:hover{background:#fafcff}
-.row select,.row input[type="date"]{padding:6px;border:1px solid var(--line);border-radius:8px;background:#fff}
-.del{justify-self:end}
-.empty{color:var(--muted);font-size:var(--fs-sm);padding:10px 14px}
+.count-chip{margin-left:auto;padding:2px 8px;border-radius:999px;background:var(--tag);border:1px solid var(--tag-line);font-size:var(--fs-xs)}
+.table{display:flex;flex-direction:column}
+.th,.tr{display:grid;grid-template-columns:24px 1.6fr 1.1fr .9fr .9fr 1fr .9fr 90px;gap:10px;align-items:center}
+.th{color:var(--muted);padding:8px 14px;background:#fff}
+.tr{padding:8px 14px;border-top:1px solid var(--line);background:#fff}
+.tr:hover{background:#FAFCFF}
+.chk{display:flex;align-items:center;justify-content:center}
+.input, .select, .date{
+  width:100%;padding:8px 10px;border:1px solid var(--line-2);border-radius:10px;background:#fff;outline:none
+}
+.badge{display:inline-flex;gap:6px;align-items:center;padding:4px 8px;border-radius:999px;background:var(--tag);border:1px solid var(--tag-line);font-size:var(--fs-xs)}
+.people{display:flex;gap:-6px;align-items:center}
+.avatar{width:26px;height:26px;border-radius:50%;display:inline-grid;place-items:center;font-size:11px;font-weight:700;color:#fff;border:2px solid #fff}
+.actions{display:flex;justify-content:flex-end}
+.btn-del{padding:6px 10px;border:1px solid var(--line-2);background:#fff;border-radius:10px;font-size:var(--fs-sm);cursor:pointer}
+.empty{color:var(--muted);font-size:var(--fs-sm);padding:12px 14px}
 
 /* Responsive */
-@media(max-width:960px){main{grid-template-columns:1fr;gap:16px;padding:16px}}
-@media(max-width:640px){.row-h,.row{grid-template-columns:1.6fr 1fr .9fr 120px}}
+@media (max-width:960px){
+  .app{grid-template-columns:1fr}
+  .aside{order:2}
+  .content{order:1}
+  .th,.tr{grid-template-columns:24px 1.3fr 1fr .9fr .9fr .9fr .9fr 90px}
+}
+@media (max-width:640px){
+  .th,.tr{grid-template-columns:24px 1fr .9fr 90px}
+  .th .hide, .tr .hide{display:none}
+}
+footer{color:var(--muted);text-align:center;font-size:var(--fs-sm);padding:16px}
+footer a{color:inherit;text-decoration:none}
 </style>
 </head>
 <body>
+<!-- Header -->
 <header>
-  <div class="brand">
-    <div class="logo"></div><h1>Task Webster</h1>
-  </div>
-  <div class="right">
-    <span id="userEmail" class="badge">—</span>
-    <button id="logout" class="btn primary">Выйти</button>
+  <div class="brand"><div class="logo"></div><h1>Task Webster</h1></div>
+  <div style="display:flex;gap:8px;align-items:center">
+    <div id="userEmail" class="user-chip">—</div>
+    <button id="logout" class="logout">Выйти</button>
   </div>
 </header>
 
-<main>
-  <!-- Сайдбар проектов -->
-  <aside class="sidebar">
-    <h2>Проекты</h2>
-    <div class="search"><input id="projSearch" placeholder="Поиск проектов…"></div>
-    <div id="projects" class="projects" aria-live="polite"></div>
-    <div id="newProject" class="addBtn">+ Новый проект</div>
-    <!-- Подсказка по БД -->
-    <div class="badge" title="projects / tasks в Supabase">Сохранение — Supabase</div>
+<div class="app">
+  <!-- Aside -->
+  <aside class="aside">
+    <div class="menu">
+      <h3>Main menu</h3>
+      <div class="search"><div class="icon"></div><input id="projSearch" placeholder="Поиск проектов…"></div>
+      <div class="item"><div class="icon"></div> Уведомления <span class="badge" style="margin-left:auto">99+</span></div>
+      <div class="item"><div class="icon"></div> Календарь</div>
+      <div class="item"><div class="icon"></div> Настройки</div>
+    </div>
+
+    <div class="projects">
+      <h3>Мои проекты</h3>
+      <div id="projList" class="list"></div>
+      <div id="addProject" class="add-proj">+ Создать новый</div>
+    </div>
   </aside>
 
-  <!-- Контент задач -->
-  <section class="content">
-    <div class="toolbar">
+  <!-- Content -->
+  <main class="content">
+    <div class="topbar">
       <div class="breadcrumb" id="crumb">Мои страницы › <b>Выберите проект</b></div>
-      <div style="display:flex;gap:8px">
-        <button id="createTask" class="btn primary">+ Новая задача</button>
+      <div style="display:flex;gap:8px;align-items:center">
+        <div class="tabs">
+          <div class="tab">Kanban</div>
+          <div class="tab">Timeline</div>
+          <div class="tab active">List</div>
+        </div>
+        <button id="newTask" class="newTask">+ Новая задача</button>
       </div>
     </div>
-    <div id="taskWrap"></div>
-  </section>
-</main>
 
-<footer style="text-align:center;color:var(--muted);padding:12px 0;font-size:var(--fs-sm)">
-  © 2025 · Webster · <a href="#" style="color:inherit;text-decoration:none">Политика конфиденциальности</a> · <a href="#" style="color:inherit;text-decoration:none">Пользовательское соглашение</a>
+    <section class="panel" id="board"></section>
+  </main>
+</div>
+
+<footer>
+  © 2025 · Webster · <a href="#">Политика конфиденциальности</a> · <a href="#">Пользовательское соглашение</a>
 </footer>
 
 <!-- Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
-/* ===== Конфиг Supabase (твой проект) ===== */
+/* ===== Supabase client ===== */
 const SUPABASE_URL="https://aayobnsqgzsmhwbtutyw.supabase.co";
 const SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFheW9ibnNxZ3pzbWh3YnR1dHl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE1MDkxNDEsImV4cCI6MjA3NzA4NTE0MX0.dNC_rYVPLk3etb2njI3agDE7wmmu4HQyBrkiyZ4ifoA";
 const supa = window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 
-/* ===== Справка по БД (создай один раз в Supabase SQL):
--- projects
-create table if not exists projects(
-  id uuid primary key default gen_random_uuid(),
-  user_id uuid not null,
-  name text not null,
-  key text,
-  created_at timestamp with time zone default now()
-);
--- tasks
-create table if not exists tasks(
-  id uuid primary key default gen_random_uuid(),
-  project_id uuid not null references projects(id) on delete cascade,
-  user_id uuid not null,
-  title text not null,
-  status text not null default 'todo', -- todo|progress|review|done
-  priority text not null default 'medium', -- low|medium|high|urgent
-  due_at date,
-  description text,
-  created_at timestamp with time zone default now()
-);
-Политика RLS (включить) + policy:
-  for select/insert/update/delete using (auth.uid() = user_id)
-============================================== */
+/* ===== DDL (если ещё не добавил people):
+alter table tasks add column if not exists people jsonb not null default '[]'::jsonb;
+-- RLS: using (auth.uid() = user_id)
+*/
 
-/* ===== Локализация статусов ===== */
-const STATUS={
-  todo:{label:"К выполнению",color:"#9aa4b2"},
-  progress:{label:"В работе",color:"#5B8DEF"},
-  review:{label:"На проверке",color:"#F1C40F"},
-  done:{label:"Готово",color:"#84d9a2"}
+/* ===== Статусы/приоритеты/типы ===== */
+const STATUS = {
+  todo:     {label:"К выполнению", color:"#9aa4b2"},
+  progress: {label:"В работе",     color:"#5B8DEF"},
+  review:   {label:"На проверке",  color:"#F1C40F"},
+  done:     {label:"Готово",       color:"#3BB273"}
 };
-const PRIORITY_LABEL={low:"низкий",medium:"средний",high:"высокий",urgent:"срочно"};
+const PRIORITY = {low:"низкий",medium:"средний",high:"высокий",urgent:"срочно"};
+const TYPES = ["dashboard","mobile","web","landing"];
 
-/* ===== Глобальное состояние ===== */
-const state={ user:null, projects:[], tasks:[], currentProjectId:null };
+/* ===== Состояние ===== */
+const S = { user:null, projects:[], tasks:[], pid:null };
 
 /* ===== Утилиты ===== */
 const $=s=>document.querySelector(s);
-function el(html){const t=document.createElement('template');t.innerHTML=html.trim();return t.content.firstElementChild;}
-function byId(arr,id){return arr.find(x=>x.id===id);}
+const el=(h)=>{const t=document.createElement('template');t.innerHTML=h.trim();return t.content.firstElementChild;}
+const fmt=(d)=>d?new Date(d).toISOString().slice(0,10):"";
+const initials=(name)=>name.split(/\s+/).map(s=>s[0]||"").join("").slice(0,2).toUpperCase();
+const colorFor=(str)=>{let h=0;for(const c of str)h=(h*31+c.charCodeAt(0))&0xffff;return `hsl(${h%360} 70% 45%)`;}
+function avatar(name){return el(`<span class="avatar" title="${name}" style="background:${colorFor(name)}">${initials(name)}</span>`);}
 
-/* ===== Gate: без сессии → login.html ===== */
+/* ===== Gate ===== */
 (async function gate(){
   const { data:{ session } } = await supa.auth.getSession();
   if(!session){ localStorage.removeItem('tw_user'); location.href='./login.html'; return; }
-  state.user={id:session.user.id,email:session.user.email};
-  $("#userEmail").textContent=state.user.email||"—";
+  S.user = { id:session.user.id, email:session.user.email };
+  $("#userEmail").textContent = S.user.email || "—";
   await loadProjects();
 })();
 
-/* ===== Выход ===== */
-$("#logout").onclick=async()=>{ await supa.auth.signOut(); localStorage.removeItem('tw_user'); location.href='./login.html'; };
+$("#logout").onclick = async ()=>{ await supa.auth.signOut(); localStorage.removeItem('tw_user'); location.href='./login.html'; };
 
-/* ===== Загрузка данных ===== */
+/* ===== Проекты ===== */
 async function loadProjects(){
-  const {data,error}=await supa.from("projects").select("*").eq("user_id",state.user.id).order("created_at",{ascending:false});
-  if(error){alert("Ошибка загрузки проектов: "+error.message);return;}
-  state.projects=data||[];
+  const {data,error}=await supa.from("projects").select("*").eq("user_id",S.user.id).order("created_at",{ascending:false});
+  if(error) return alert("Ошибка загрузки проектов: "+error.message);
+  S.projects = data||[];
   renderProjects();
-  // Открыть последний выбранный проект (из localStorage)
   const last = localStorage.getItem('tw_last_project');
-  if(last && byId(state.projects,last)){ openProject(last); }
+  if(last && S.projects.find(p=>p.id===last)) openProject(last);
 }
-
-async function loadTasks(pid){
-  const {data,error}=await supa.from("tasks").select("*").eq("project_id",pid).order("created_at",{ascending:false});
-  if(error){alert("Ошибка загрузки задач: "+error.message);return;}
-  state.tasks=data||[];
-}
-
-/* ===== Рендер проектов ===== */
 function renderProjects(filter=""){
-  const wrap=$("#projects"); wrap.innerHTML="";
-  const list = state.projects.filter(p=>p.name.toLowerCase().includes(filter.toLowerCase()));
-  if(!list.length){wrap.append(el(`<div class="empty">Проектов нет</div>`)); return;}
-  list.forEach(p=>{
-    const item=el(`<div class="project" data-id="${p.id}">
+  const list=$("#projList"); list.innerHTML="";
+  const items=S.projects.filter(p=>p.name.toLowerCase().includes(filter.toLowerCase()));
+  if(!items.length){ list.append(el(`<div class="empty">Проектов нет</div>`)); return; }
+  items.forEach(p=>{
+    const node=el(`<div class="proj" data-id="${p.id}">
       <span>${p.name}</span>
       <div class="proj-actions">
-        <button class="btn xs" data-act="rename">Переимен.</button>
-        <button class="btn xs" data-act="del">Удалить</button>
+        <button class="btn-xs" data-act="rename">Переимен.</button>
+        <button class="btn-xs" data-act="del">Удалить</button>
       </div>
     </div>`);
-    if(p.id===state.currentProjectId) item.classList.add("active");
-    item.addEventListener("click",(e)=>{ if(e.target.dataset.act) return; openProject(p.id); });
-    item.querySelector('[data-act="rename"]').onclick=async(e)=>{
-      e.stopPropagation();
-      const name=prompt("Новое имя проекта:",p.name); if(!name||name===p.name) return;
-      const {error}=await supa.from("projects").update({name}).eq("id",p.id);
-      if(error) return alert("Не удалось переименовать: "+error.message);
-      p.name=name; renderProjects($("#projSearch").value); if(p.id===state.currentProjectId) $("#crumb").innerHTML=`Мои страницы › <b>${p.name}</b>`;
+    if(p.id===S.pid) node.classList.add("active");
+    node.addEventListener("click",(e)=>{ if(e.target.dataset.act) return; openProject(p.id); });
+    node.querySelector('[data-act="rename"]').onclick=async(e)=>{
+      e.stopPropagation(); const name=prompt("Новое имя проекта:",p.name); if(!name||name===p.name) return;
+      const {error}=await supa.from("projects").update({name}).eq("id",p.id); if(error) return alert(error.message);
+      p.name=name; renderProjects($("#projSearch").value); if(p.id===S.pid) $("#crumb").innerHTML=`Мои страницы › <b>${p.name}</b>`;
     };
-    item.querySelector('[data-act="del"]').onclick=async(e)=>{
-      e.stopPropagation();
-      if(!confirm("Удалить проект и все его задачи?")) return;
-      const {error}=await supa.from("projects").delete().eq("id",p.id);
-      if(error) return alert("Не удалось удалить: "+error.message);
-      state.projects=state.projects.filter(x=>x.id!==p.id);
-      if(state.currentProjectId===p.id){ state.currentProjectId=null; $("#taskWrap").innerHTML=""; $("#crumb").innerHTML=`Мои страницы › <b>Выберите проект</b>`; }
-      renderProjects($("#projSearch").value);
+    node.querySelector('[data-act="del"]').onclick=async(e)=>{
+      e.stopPropagation(); if(!confirm("Удалить проект и все его задачи?")) return;
+      const {error}=await supa.from("projects").delete().eq("id",p.id); if(error) return alert(error.message);
+      S.projects=S.projects.filter(x=>x.id!==p.id); if(S.pid===p.id){S.pid=null; $("#board").innerHTML="";}
+      renderProjects($("#projSearch").value); $("#crumb").innerHTML=`Мои страницы › <b>Выберите проект</b>`;
     };
-    wrap.append(item);
+    list.append(node);
   });
 }
+$("#projSearch").oninput=e=>renderProjects(e.target.value);
 
-/* ===== Создание проекта ===== */
-$("#newProject").onclick=async()=>{
+$("#addProject").onclick=async()=>{
   const name=prompt("Название проекта?"); if(!name) return;
   const key=name.split(/\s+/).map(s=>s[0]).join("").slice(0,3).toUpperCase();
-  const {data,error}=await supa.from("projects").insert({name,key,user_id:state.user.id}).select().single();
-  if(error){alert("Не удалось создать проект: "+error.message);return;}
-  state.projects.unshift(data); renderProjects($("#projSearch").value); openProject(data.id);
+  const {data,error}=await supa.from("projects").insert({name,key,user_id:S.user.id}).select().single();
+  if(error) return alert(error.message);
+  S.projects.unshift(data); renderProjects($("#projSearch").value); openProject(data.id);
 };
 
-/* ===== Открыть проект ===== */
+/* ===== Задачи ===== */
 async function openProject(pid){
-  state.currentProjectId=pid; localStorage.setItem('tw_last_project',pid);
-  document.querySelectorAll(".project").forEach(n=>n.classList.toggle("active",n.dataset.id===pid));
-  const p=byId(state.projects,pid); $("#crumb").innerHTML=`Мои страницы › <b>${p?.name||"Проект"}</b>`;
-  await loadTasks(pid); renderTasks();
+  S.pid=pid; localStorage.setItem('tw_last_project',pid);
+  document.querySelectorAll(".proj").forEach(n=>n.classList.toggle("active",n.dataset.id===pid));
+  const p=S.projects.find(x=>x.id===pid);
+  $("#crumb").innerHTML=`Мои страницы › <b>${p?.name||"Проект"}</b>`;
+  await loadTasks();
+  renderBoard();
 }
 
-/* ===== Рендер задач (группы по статусу) ===== */
-function renderTasks(){
-  const wrap=$("#taskWrap"); wrap.innerHTML="";
-  if(!state.currentProjectId){ wrap.append(el(`<div class="empty">Сначала выберите проект</div>`)); return; }
+async function loadTasks(){
+  const {data,error}=await supa.from("tasks").select("*").eq("project_id",S.pid).order("created_at",{ascending:false});
+  if(error) return alert("Ошибка загрузки задач: "+error.message);
+  S.tasks=data||[];
+}
 
-  const list=el(`<div class="rows"></div>`);
-  const groups=Object.keys(STATUS);
+$("#newTask").onclick=async()=>{
+  if(!S.pid) return alert("Сначала выберите проект");
+  const title=prompt("Название задачи?"); if(!title) return;
+  const payload={project_id:S.pid,user_id:S.user.id,title,description:"",status:"todo",priority:"medium",type:"dashboard",due_at:null,people:[]};
+  const {data,error}=await supa.from("tasks").insert(payload).select().single();
+  if(error) return alert(error.message);
+  S.tasks.unshift(data);
+  // вставим в UI
+  const sec=document.querySelector(`section[data-group="todo"] [data-rows]`);
+  if(sec){ if(sec.querySelector(".empty")) sec.innerHTML=""; sec.prepend(taskRow(data)); updateCount(sec.closest("section")); }
+};
 
-  // Заголовок таблицы
-  list.append(el(`<div class="row-h"><div>Задача</div><div>Статус</div><div>Приоритет</div><div>Срок</div><div>Действия</div></div>`));
+function renderBoard(){
+  const board=$("#board"); board.innerHTML="";
+  if(!S.pid){ board.append(el(`<div class="empty">Выберите проект слева</div>`)); return; }
 
-  // По группам рендерим блоки
-  groups.forEach(g=>{
-    const items=state.tasks.filter(t=>t.status===g);
-    const sec=el(`<section class="group" data-group="${g}">
-      <div class="group-h"><div class="dot" style="background:${STATUS[g].color}"></div><b>${STATUS[g].label.toUpperCase()}</b><span class="badge" style="margin-left:auto"><span data-count>${items.length}</span></span></div>
-      <div class="rows" data-rows></div>
+  const tableHead = el(`<div class="th">
+    <div class="chk"></div><div>Task name</div><div class="hide">Description</div>
+    <div class="hide">Estimation</div><div class="hide">Type</div><div class="hide">People</div><div class="hide">Priority</div><div></div>
+  </div>`);
+
+  Object.entries(STATUS).forEach(([key,meta])=>{
+    const sec = el(`<section class="group" data-group="${key}">
+      <div class="group-h">
+        <div class="dot" style="background:${meta.color}"></div>
+        <b>${meta.label}</b>
+        <span class="count-chip"><span data-count>0</span></span>
+      </div>
+      <div class="table" data-wrap></div>
     </section>`);
-    const body=sec.querySelector("[data-rows]");
-    if(!items.length) body.append(el(`<div class="empty">Пусто</div>`));
-    items.forEach(t=>body.append(taskRow(t)));
-    wrap.append(sec);
+    const wrap=sec.querySelector("[data-wrap]");
+    wrap.append(tableHead.cloneNode(true));
+
+    const items=S.tasks.filter(t=>t.status===key);
+    if(!items.length){ wrap.append(el(`<div class="empty">Пусто</div>`)); }
+    else{ items.forEach(t=>wrap.append(taskRow(t))); }
+    sec.querySelector("[data-count]").textContent = items.length;
+    board.append(sec);
   });
 
-  // Действия внутри списка
-  wrap.onchange=async(e)=>{
-    const f=e.target.dataset.field, id=e.target.dataset.id; if(!f||!id) return;
-    const val=(f==="due_at")?(e.target.value||null):e.target.value;
-    const i=state.tasks.findIndex(t=>t.id===id); if(i>-1) state.tasks[i]={...state.tasks[i],[f]:val};
-    try{ await supa.from("tasks").update({[f]:val}).eq("id",id); }catch(err){ alert("Ошибка сохранения: "+err.message); return; }
-    // Мгновенное перемещение при смене статуса
-    if(f==="status"){ moveRowInstant(e.target.closest(".row"), val); }
+  // Делегирование: изменения и удаления
+  board.onchange=async(e)=>{
+    const id=e.target.dataset.id, field=e.target.dataset.field; if(!id||!field) return;
+    let value=e.target.value;
+    if(field==="due_at"){ value = value || null; }
+    if(field==="people"){ value = value.split(",").map(s=>s.trim()).filter(Boolean); }
+    const i=S.tasks.findIndex(x=>x.id===id); if(i>-1) S.tasks[i] = {...S.tasks[i], [field]:value};
+    const {error}=await supa.from("tasks").update({[field]:value}).eq("id",id);
+    if(error) return alert("Ошибка сохранения: "+error.message);
+    if(field==="status"){ // мгновенное перемещение
+      const row=e.target.closest(".tr"); moveRow(row, value);
+    }
   };
-
-  wrap.onclick=async(e)=>{
+  board.onclick=async(e)=>{
     const id=e.target.dataset.del; if(!id) return;
     if(!confirm("Удалить задачу?")) return;
-    try{ await supa.from("tasks").delete().eq("id",id); }catch(err){ return alert("Ошибка удаления: "+err.message); }
-    state.tasks=state.tasks.filter(t=>t.id!==id);
-    const row=e.target.closest(".row"); const sec=row.closest(".group");
-    row.remove(); updateGroupCount(sec);
-    if(!sec.querySelector(".row")) sec.querySelector("[data-rows]").innerHTML='<div class="empty">Пусто</div>';
+    const {error}=await supa.from("tasks").delete().eq("id",id);
+    if(error) return alert(error.message);
+    S.tasks=S.tasks.filter(t=>t.id!==id);
+    const row=e.target.closest(".tr"); const sec=row.closest("section"); row.remove(); updateCount(sec);
+    const wrap=sec.querySelector("[data-wrap]");
+    if(wrap && wrap.querySelectorAll(".tr").length===0){ const empty=el(`<div class="empty">Пусто</div>`); wrap.append(empty); }
   };
 }
 
-/* ===== Создание задачи ===== */
-$("#createTask").onclick=async()=>{
-  if(!state.currentProjectId) return alert("Сначала выберите проект");
-  const title=prompt("Заголовок задачи?"); if(!title) return;
-  const payload={project_id:state.currentProjectId,user_id:state.user.id,title,status:"todo",priority:"medium",due_at:null,description:""};
-  const {data,error}=await supa.from("tasks").insert(payload).select().single();
-  if(error){alert("Не удалось создать: "+error.message);return;}
-  state.tasks.unshift(data);
-
-  // Мгновенно добавим в DOM (группа todo)
-  const todo=document.querySelector('.group[data-group="todo"] [data-rows]');
-  if(todo){ if(todo.querySelector(".empty")) todo.innerHTML=""; todo.prepend(taskRow(data)); updateGroupCount(todo.closest(".group")); }
-};
-
-/* ===== Строка задачи ===== */
 function taskRow(t){
-  return el(`<div class="row" data-id="${t.id}">
-    <div>${t.title}</div>
-    <div>
-      <select data-id="${t.id}" data-field="status">
-        ${Object.keys(STATUS).map(s=>`<option value="${s}" ${s===t.status?'selected':''}>${STATUS[s].label}</option>`).join('')}
+  const people = Array.isArray(t.people)?t.people:[];
+  const row = el(`<div class="tr" data-id="${t.id}">
+    <div class="chk"><input type="checkbox"></div>
+    <div><input class="input" data-id="${t.id}" data-field="title" value="${escapeHtml(t.title)}" title="Заголовок"></div>
+    <div class="hide"><input class="input" data-id="${t.id}" data-field="description" value="${escapeHtml(t.description||'')}" placeholder="Описание"></div>
+    <div class="hide"><input class="date"  type="date" data-id="${t.id}" data-field="due_at" value="${fmt(t.due_at)}" title="Срок"></div>
+    <div class="hide">
+      <select class="select" data-id="${t.id}" data-field="type">
+        ${TYPES.map(tp=>`<option ${tp===(t.type||'dashboard')?'selected':''} value="${tp}">${tp}</option>`).join('')}
       </select>
     </div>
-    <div>
-      <select data-id="${t.id}" data-field="priority">
-        ${['low','medium','high','urgent'].map(s=>`<option value="${s}" ${s===t.priority?'selected':''}>${PRIORITY_LABEL[s]}</option>`).join('')}
+    <div class="hide">
+      <div class="people" title="${people.join(', ')||'Добавьте участников'}">
+        ${people.slice(0,4).map(n=>avatar(n).outerHTML).join('')}
+        ${people.length>4?`<span class="badge">+${people.length-4}</span>`:''}
+      </div>
+      <input class="input" style="margin-top:6px" placeholder="Имена через запятую" value="${people.join(', ')}" data-id="${t.id}" data-field="people">
+    </div>
+    <div class="hide">
+      <select class="select" data-id="${t.id}" data-field="priority">
+        ${Object.entries(PRIORITY).map(([k,v])=>`<option value="${k}" ${k===t.priority?'selected':''}>${v}</option>`).join('')}
       </select>
     </div>
-    <div><input type="date" data-id="${t.id}" data-field="due_at" value="${t.due_at||''}"></div>
-    <div class="del"><button class="btn xs" data-del="${t.id}">Удалить</button></div>
+    <div class="actions">
+      <select class="select" data-id="${t.id}" data-field="status">
+        ${Object.entries(STATUS).map(([k,v])=>`<option value="${k}" ${k===t.status?'selected':''}>${v.label}</option>`).join('')}
+      </select>
+      <button class="btn-del" data-del="${t.id}">Удалить</button>
+    </div>
   </div>`);
+
+  // inline сохранение title/description на blur
+  row.querySelectorAll('input.input').forEach(inp=>{
+    inp.addEventListener('blur', async (e)=>{
+      const id=e.target.dataset.id, field=e.target.dataset.field, value=e.target.value;
+      const {error}=await supa.from("tasks").update({[field]:value}).eq("id",id);
+      if(error) alert("Ошибка сохранения: "+error.message);
+    });
+  });
+
+  return row;
 }
 
-/* ===== Перемещение строки по DOM и обновление счётчиков ===== */
-function moveRowInstant(row, toStatus){
-  const wrap=document.querySelector(`.group[data-group="${toStatus}"] [data-rows]`);
-  const fromGroup=row.closest(".group");
-  if(wrap){
-    if(wrap.querySelector(".empty")) wrap.innerHTML="";
-    wrap.prepend(row);
-    updateGroupCount(fromGroup);
-    updateGroupCount(wrap.closest(".group"));
-    if(!fromGroup.querySelector(".row")) fromGroup.querySelector("[data-rows]").innerHTML='<div class="empty">Пусто</div>';
+function moveRow(row, toStatus){
+  const fromSec=row.closest("section");
+  const toWrap=document.querySelector(`section[data-group="${toStatus}"] [data-wrap]`);
+  if(!toWrap) return;
+  // удаляем "Пусто"
+  const empty=toWrap.querySelector(".empty"); if(empty) empty.remove();
+  toWrap.append(row);
+  updateCount(fromSec); updateCount(toWrap.closest("section"));
+  if(fromSec.querySelectorAll(".tr").length===0){
+    fromSec.querySelector("[data-wrap]").append(el(`<div class="empty">Пусто</div>`));
   }
 }
-function updateGroupCount(sec){ sec.querySelector("[data-count]").textContent=sec.querySelectorAll(".row").length; }
+function updateCount(sec){ sec.querySelector("[data-count]").textContent = sec.querySelectorAll(".tr").length; }
 
-/* ===== Поиск по проектам ===== */
-$("#projSearch").oninput=(e)=>{ renderProjects(e.target.value.trim()); };
+function escapeHtml(s){return (s||"").replace(/[&<>"']/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));}
 </script>
 </body>
 </html>
